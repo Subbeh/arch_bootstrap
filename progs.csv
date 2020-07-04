@@ -1,8 +1,9 @@
 Tag,Category,Name,Description
-S,system,fonts,Fonts test
-P,utils,lolcat,LOLcat
+S,system,fonts,Fonts
+P,utils,lolcat,Lolcat
 P,system,npm,NodeJS
 P,utils,dnsutils,DNS Utilities
-P,utils,gnu-netcat, NetCat
-P,system,archlinux-keyring, Arch Linux PGP keyring
+P,utils,gnu-netcat,NetCat
+P,system,archlinux-keyring,Arch Linux PGP keyring
 S,system,tweaks,Various system tweaks
+P,editors,vim,Vim Editor
