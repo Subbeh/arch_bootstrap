@@ -13,8 +13,8 @@ DEBUG=1
 
 main() {
   while getopts "hfr:" o; do case "${o}" in
-	  h) printf "Optional arguments for custom use:\\n  -f: Dependencies and programs csv (local file or url)\\n  -a: AUR helper (must have pacman-like syntax)\\n  -h: Show this message\\n" && exit ;;
-	  f) progsfile=${OPTARG} ;;
+    h) printf "Optional arguments for custom use:\\n  -f: Dependencies and programs csv (local file or url)\\n  -a: AUR helper (must have pacman-like syntax)\\n  -h: Show this message\\n" && exit ;;
+    f) progsfile=${OPTARG} ;;
   	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
   esac done
 
@@ -23,7 +23,7 @@ main() {
 
   preprocess
 
-  [ -r "${progsfile:?not set}" ] || { log -e cannot find $progsfile ; exit 1; }
+  [ -r "${progsfile:?not set}" ] || { log -e cannot find $progsfile ; exit 1 ; }
   read_progs <(sort --field-separator=',' -r -k3 -k1 -k2 $progsfile)
 
   for choice in $choices ; do
@@ -120,7 +120,7 @@ install_git() {
 
 run_script() {
   log running script "\e[1;96m$1\e[0m"
-  [ ! -f scripts/$1 ] && { log -e script file \'scripts/$1\' does not exist ; return; }
+  [ ! -f scripts/$1 ] && { log -e script file \'scripts/$1\' does not exist ; return ; }
   catch source "scripts/$1" 
 }
 
