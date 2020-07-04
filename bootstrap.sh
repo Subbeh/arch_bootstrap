@@ -10,10 +10,6 @@ script_dir="scripts"
 LOGFILE=install.log
 DEBUG=1
 
-if [ -f "config" ] ; then
-  source config
-fi
-
 
 log_setup() {
   exec > >(tee -a $LOGFILE)
@@ -31,6 +27,19 @@ log() {
 }
 
 
+catch() {
+  err="$(mktemp)" ; dbg="$(mktemp)"
+  $@ >$dbg 2>$err
+  while read errmsg ; do log -e ${errmsg/error: /} ; done < $err
+  while read dbgmsg ; do log -d $dbgmsg ; done < $dbg
+}
+
+
+preprocess() {
+  [ ! $(command -v dialog) ] && install_pkg dialog
+  [ ! $(command -v yay) ] && install_pkg yay
+}
+
 read_progs() {
   while IFS=, read -r tag cat name desc ; do
     [[ ! $tag =~ [SP] ]] && continue
@@ -47,6 +56,7 @@ read_progs() {
     done
     choices+=$(dialog --separate-output --checklist "$category" $((${#options[@]}/3+7)) 50 16 "${options[@]}" 2>&1 >/dev/tty)" "
   done
+  clear
 }
 
 
@@ -61,15 +71,18 @@ run_job() {
 
 
 install_pkg() {
-  log installing $1
-  err="$(mktemp)" ; dbg="$(mktemp)"
-  sudo pacman --noconfirm --needed -S "$1" >$dbg 2>$err
-  while read errmsg ; do log -e ${errmsg/error: /} ; done < $err
-  while read dbgmsg ; do log -d $dbgmsg ; done < $dbg
+  log installing package "\e[1;96m$1\e[0m"
+  catch sudo pacman --noconfirm --needed -S "$1"
+}
+
+install_pkg_aur() {
+  log installing AUR package "\e[1;96m$1\e[0m"
+  catch sudo yay --noconfirm --needed -S "$1"
 }
 
 run_script() {
-  log running script $1
+  log running script "\e[1;96m$1\e[0m"
+  catch source "scripts/$1" 
 }
 
 main() {
@@ -81,6 +94,8 @@ main() {
 
   log starting script
   sudo -v
+
+  preprocess
 
   [ -r "${progsfile:?not set}" ] || { log -e cannot find $progsfile ; exit 1; }
   read_progs <(sort --field-separator=',' -r -k3 -k1 -k2 $progsfile)

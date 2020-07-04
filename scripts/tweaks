@@ -1,0 +1,2 @@
+# disable system beep
+sudo rmmod pcspkr

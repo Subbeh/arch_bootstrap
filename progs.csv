@@ -2,3 +2,7 @@ Tag,Category,Name,Description
 S,system,fonts,Fonts test
 P,utils,lolcat,LOLcat
 P,system,npm,NodeJS
+P,utils,dnsutils,DNS Utilities
+P,utils,gnu-netcat, NetCat
+P,system,archlinux-keyring, Arch Linux PGP keyring
+S,system,tweaks,Various system tweaks
