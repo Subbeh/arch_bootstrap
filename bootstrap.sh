@@ -10,11 +10,11 @@ script_dir="scripts"
 LOGFILE=install.log
 DEBUG=1
 
+exec > >(tee -a $LOGFILE)
+exec 2>&1
 
-log_setup() {
-  exec > >(tee -a $LOGFILE)
-  exec 2>&1
-}
+tput smcup
+trap 'tput rmcup || clear; exit 0' SIGINT EXIT
 
 
 main() {
@@ -74,7 +74,7 @@ read_progs() {
   [ -r "${1:?not set}" ] || { log -e cannot find $1 ; exit 1 ; }
   _dlg() { choices+=$(dialog --separate-output --checklist "$cat" $((${#options[@]}/3+7)) 50 16 "${options[@]}" 2>&1 >/dev/tty)" " ; }
 
-  while IFS=, read -r tag name desc ; do
+  while IFS=, read -r tag name desc cmd ; do
     if [[ $tag =~ ^= ]] ; then
       [[ "$options" ]] && _dlg
       options=()
@@ -82,8 +82,8 @@ read_progs() {
       continue
     fi
 
-    [[ ! $tag =~ [SPA] ]] && continue
-    job_list[$((++id))]=$id,$tag,$cat,$name,$desc
+    [[ ! $tag =~ ^[SPA] ]] && continue
+    job_list[$((++id))]=$id,$tag,$cat,$name,$desc,$cmd
     options+=($id "$desc" off)
   done < $1
 
@@ -93,12 +93,15 @@ read_progs() {
 
 
 run_job() {
-  IFS=',' read -r id tag cat name desc <<< "$@"
+  IFS=',' read -r id tag cat name desc cmd <<< "$@"
   case $tag in
     P) install_pkg $name ;;
     A) install_pkg -A $name ;;
     S) run_script $name ;;
   esac
+
+  echo TEST1 $?
+  [ "$cmd" ] && eval $cmd
 }
 
 
@@ -126,7 +129,6 @@ run_script() {
   [ ! -f scripts/$1 ] && { log -e script file \'scripts/$1\' does not exist ; return ; }
   catch source "scripts/$1" 
 }
-
 
 log_setup
 main $*

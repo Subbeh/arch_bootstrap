@@ -31,7 +31,7 @@ P,terminator,Terminator
 P,yakuake,Yakuake
 
 =KDE Plasma
-P,plasma,KDE Plasma
+P,plasma,KDE Plasma,sudo systemctl enable sddm
 P,kvantum-qt5,Kvantum
 P,kvantum-theme-arc,Kvantum Arc Theme
 P,dolphin-plugins,Dolphin Plugins
