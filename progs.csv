@@ -1,9 +1,71 @@
-Tag,Category,Name,Description
-S,system,fonts,Fonts
-P,utils,lolcat,Lolcat
-P,system,npm,NodeJS
-P,utils,dnsutils,DNS Utilities
-P,utils,gnu-netcat,NetCat
-P,system,archlinux-keyring,Arch Linux PGP keyring
-S,system,tweaks,Various system tweaks
-P,editors,vim,Vim Editor
+=System
+P,archlinux-keyring,Arch Linux PGP keyring
+P,dhcpcd,DHCP Client Daemon,sudo systemctl enable dhcpcd
+P,base-devel,Build Tools (base-devel)
+P,npm,NodeJS
+P,jre-openjdk,Java JRE
+P,samba,samba
+P,zsh,zsh
+
+=Utils
+P,gnu-netcat,netcat
+P,bat,bat
+P,conky,conky
+P,fzf,fzf
+P,htop,htop
+A,lifx,lifx
+P,locate,locate
+P,lolcat,lolcat
+P,neofetch,neofetch
+P,net-tools,net-tools
+P,dnsutils,DNS utilities
+P,redshift,redshift
+P,tree,tree
+P,vifm,vifm
+
+=Tools
+A,timeshift,Timeshift
+P,virtualbox virtualbox-host-modules-arch,VirtualBox
+A,stacer,Stacer
+P,terminator,Terminator
+P,yakuake,Yakuake
+
+=KDE Plasma
+P,plasma,KDE Plasma
+P,kvantum-qt5,Kvantum
+P,kvantum-theme-arc,Kvantum Arc Theme
+P,dolphin-plugins,Dolphin Plugins
+P,kolourpaint,KolourPaint
+P,latte-dock,Latte Dock
+P,plasma-browser-integration,Plasma Browser Integration
+
+=Browsers
+P,firefox,Firefox
+P,chromium,Chromium
+P,google-chrome,Chrome
+
+=Editors
+P,vim,vim,
+A,visual-studio-code-bin,Visual Studio Code
+P,atom,Atom
+P,intellij-idea-community-edition,IntelliJ IDEA
+P,kwrite,KWrite
+P,pycharm-community-edition,PyCharm IDE
+
+=Media
+P,vlc,VLC
+P,cheese,Cheese
+P,flameshot,Flameshot
+S,popcorntime,PopcornTime
+A,zoom,Zoom
+
+=Various
+P,calibre,Calibre
+A,dropbox,Dropbox
+P,filezilla,FileZilla
+A,slack,Slack
+A,spotify,Spotify
+P,steam,Steam
+P,transmission-qt,Transmission
+A,tusk,Tusk
+A,tuxguitar,Tuxguitar
