@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
+#
+# SCRIPT: arch_bootstrap.sh
+# AUTHOR: Steven Terwindt <TODO>
+# DATE:   2020-07-05
+# REV:    1.0
+#
+# PLATFORM: Arch based Linux distributions
+#
+# PURPOSE: Automate the setup of a new Arch installation by installing
+#          predefined packages and running configuration scripts
 
+
+## Variables
 declare -a job_list
 declare -a categories
 declare -a choices
@@ -10,13 +22,14 @@ script_dir="scripts"
 LOGFILE=install.log
 export DEBUG=1
 
+
+## Logging and error handling
+> $LOGFILE
 exec > >(tee -a $LOGFILE)
 exec 2>&1
 
-
 tput smcup
 trap 'tput rmcup || clear; exit 0' SIGINT EXIT
-
 
 log() {
   case $1 in
@@ -29,14 +42,16 @@ log() {
 
 export -f log
 err="$(mktemp)" ; dbg="$(mktemp)"
-tail -f $err 2>/dev/null | xargs -n1 -I {} bash -c 'log -e "$@"' _ {} &
-tail -f $dbg 2>/dev/null | xargs -n1 -I {} bash -c 'log -d "$@"' _ {} &
+tail -f $err 2>/dev/null | xargs -0 -n1 -d '\n' -I {} bash -c 'log -e "$@"' _ {} &
+tail -f $dbg 2>/dev/null | xargs -0 -n1 -d '\n' -I {} bash -c 'log -d "$@"' _ {} &
 
-catch() { $@ >$dbg 2>$err; }
+catch() { $@ >>$dbg 2>>$err; }
 
+
+## Main function
 main() {
-  while getopts "hfr:" o ; do case "${o}" in
-    h) printf "Optional arguments for custom use:\\n  -f: Dependencies and programs csv (local file or url)\\n  -a: AUR helper (must have pacman-like syntax)\\n  -h: Show this message\\n" && exit ;;
+  while getopts "hf:a:" o ; do case "${o}" in
+    h) printf "Optional arguments for custom use:\\n  -f: Dependencies and programs csv\\n  -h: Show this message\\n" && exit ;;
     f) progsfile=${OPTARG} ;;
   	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
   esac done
@@ -53,7 +68,7 @@ main() {
   done
 }
 
-
+## Pre-processing - install build packages and AUR helper
 preprocess() {
   log running prerequisites
   [ $(id -u) = 0 ] && { log -e script cannot be run as root ; exit 1 ; }
@@ -68,7 +83,7 @@ preprocess() {
   fi
 }
 
-
+## Read progs list and run configuration dialogs
 read_progs() {
   [ -r "${1:?not set}" ] || { log -e cannot find $1 ; exit 1 ; }
   _dlg() { choices+=$(dialog --separate-output --checklist "$cat" $((${#options[@]}/3+7)) 50 16 "${options[@]}" 2>&1 >/dev/tty)" " ; }
@@ -91,6 +106,7 @@ read_progs() {
 }
 
 
+## Run jobs based on tag
 run_job() {
   IFS=',' read -r id tag cat name desc cmd <<< "$@"
   case $tag in
@@ -103,6 +119,7 @@ run_job() {
 }
 
 
+## Run Pacman/AUR helper
 install_pkg() {
   [ "$1" == "-A" ] && { aur=yay ; shift ; }
   if [ ! $(pacman -Qq $1 2>/dev/null) ] ; then
@@ -114,6 +131,7 @@ install_pkg() {
 }
 
 
+## Install from Git repository
 install_git() {
   log installing package "\e[1;96m$1\e[0m"
   TEMP_DIR="$(mktemp -d)"
@@ -122,10 +140,13 @@ install_git() {
 }
 
 
+## Run custom script
 run_script() {
   log running script "\e[1;96m$1\e[0m"
   [ ! -f scripts/$1 ] && { log -e script file \'scripts/$1\' does not exist ; return ; }
   catch source "scripts/$1" 
 }
 
+
+## Run main function
 main $*
