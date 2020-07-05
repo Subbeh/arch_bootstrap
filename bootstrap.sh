@@ -8,14 +8,31 @@ declare -i id=0
 progsfile="progs.csv"
 script_dir="scripts"
 LOGFILE=install.log
-DEBUG=1
+export DEBUG=1
 
 exec > >(tee -a $LOGFILE)
 exec 2>&1
 
+
 tput smcup
 trap 'tput rmcup || clear; exit 0' SIGINT EXIT
 
+
+log() {
+  case $1 in
+    -d) [ ${DEBUG:-0} -ne 1 ] && return ; l=DEBUG ; shift ;;
+    -e) l=ERROR ; shift ;;
+    *)  l=INFO ;;
+  esac
+  printf "[$(date --rfc-3339=seconds)] $l: $*\n"
+}
+
+export -f log
+err="$(mktemp)" ; dbg="$(mktemp)"
+tail -f $err 2>/dev/null | xargs -n1 -I {} bash -c 'log -e "$@"' _ {} &
+tail -f $dbg 2>/dev/null | xargs -n1 -I {} bash -c 'log -d "$@"' _ {} &
+
+catch() { $@ >$dbg 2>$err; }
 
 main() {
   while getopts "hfr:" o ; do case "${o}" in
@@ -28,30 +45,12 @@ main() {
   sudo -v
 
   preprocess
-
+  sleep 2
   read_progs $progsfile
 
   for choice in $choices ; do
     run_job "${job_list[$choice]}"
   done
-}
-
-
-log() {
-  case $1 in
-    -d) [ $DEBUG -ne 1 ] && return ; l=DEBUG ; shift ;;
-    -e) l=ERROR ; shift ;;
-    *)  l=INFO ;;
-  esac
-  printf "[$(date --rfc-3339=seconds)] $l: $*\n"
-}
-
-
-catch() {
-  err="$(mktemp)" ; dbg="$(mktemp)"
-  $@ >$dbg 2>$err
-  while read errmsg ; do log -e ${errmsg/error: /} ; done < $err
-  while read dbgmsg ; do log -d $dbgmsg ; done < $dbg
 }
 
 
@@ -100,8 +99,7 @@ run_job() {
     S) run_script $name ;;
   esac
 
-  echo TEST1 $?
-  [ "$cmd" ] && eval $cmd
+  [ "$cmd" ] && $cmd
 }
 
 
@@ -109,7 +107,7 @@ install_pkg() {
   [ "$1" == "-A" ] && { aur=yay ; shift ; }
   if [ ! $(pacman -Qq $1 2>/dev/null) ] ; then
     log installing ${aur:+AUR} package "\e[1;96m$1\e[0m"
-    catch sudo ${aur:-sudo pacman} --noconfirm --needed -S "$1"
+    catch ${aur:-sudo pacman} --noconfirm --needed -S "$1"
   else
     log package "\e[1;96m$1\e[0m" is already installed
   fi
@@ -130,5 +128,4 @@ run_script() {
   catch source "scripts/$1" 
 }
 
-log_setup
 main $*
