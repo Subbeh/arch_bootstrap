@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# SCRIPT: arch_bootstrap.sh
-# AUTHOR: Steven Terwindt <TODO>
+# SCRIPT: bootstrap.sh
+# AUTHOR: Steven Terwindt <info@sterwindt.com>
 # DATE:   2020-07-05
 # REV:    1.0
 #
@@ -21,6 +21,7 @@ progsfile="progs.csv"
 script_dir="scripts"
 LOGFILE=install.log
 export DEBUG=1
+checkbox=on # toggle checkboxes on/off
 
 
 ## Logging and error handling
@@ -42,8 +43,8 @@ log() {
 
 export -f log
 err="$(mktemp)" ; dbg="$(mktemp)"
-tail -f $err 2>/dev/null | xargs -0 -n1 -d '\n' -I {} bash -c 'log -e "$@"' _ {} &
-tail -f $dbg 2>/dev/null | xargs -0 -n1 -d '\n' -I {} bash -c 'log -d "$@"' _ {} &
+tail -f $err 2>/dev/null | while IFS= read line ; do log -e $line ; done &
+tail -f $dbg 2>/dev/null | while IFS= read line ; do log -d $line ; done &
 
 catch() { $@ >>$dbg 2>>$err; }
 
@@ -68,6 +69,7 @@ main() {
   done
 }
 
+
 ## Pre-processing - install build packages and AUR helper
 preprocess() {
   log running prerequisites
@@ -82,6 +84,7 @@ preprocess() {
     install_git yay https://aur.archlinux.org/yay.git
   fi
 }
+
 
 ## Read progs list and run configuration dialogs
 read_progs() {
@@ -98,7 +101,7 @@ read_progs() {
 
     [[ ! $tag =~ ^[SPA] ]] && continue
     job_list[$((++id))]=$id,$tag,$cat,$name,$desc,$cmd
-    options+=($id "$desc" off)
+    options+=($id "$desc" ${checkbox:-off})
   done < $1
 
   [[ "$options" ]] && _dlg
@@ -115,7 +118,7 @@ run_job() {
     S) run_script $name ;;
   esac
 
-  [ "$cmd" ] && $cmd
+  [ "$cmd" ] && catch $cmd
 }
 
 

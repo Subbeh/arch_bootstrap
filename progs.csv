@@ -1,11 +1,13 @@
 =System
 P,archlinux-keyring,Arch Linux PGP keyring
 P,dhcpcd,DHCP Client Daemon,sudo systemctl enable dhcpcd
-P,base-devel,Build Tools (base-devel)
+P,base-devel cmake,Build Tools (base-devel)
+P,networkmanager network-manager-applet,Network Manager
 P,npm,NodeJS
 P,jre-openjdk,Java JRE
 P,samba,samba
 P,zsh,zsh
+P,expressvpn,ExpressVPN,sudo systemctl enable expressvpn
 
 =Utils
 P,gnu-netcat,netcat
@@ -22,6 +24,12 @@ P,dnsutils,dnsutils
 P,redshift,redshift
 P,tree,tree
 P,vifm,vifm
+P,traceroute,traceroute
+P,zip unzip,zip
+P,wget,wget
+P,tmux,tmux
+A,hollywood,hollywood
+A,zsh-fast-syntax-highlighting,zsh-fast-syntax-highlighting
 
 =Tools
 A,timeshift,Timeshift
@@ -38,6 +46,7 @@ P,dolphin-plugins,Dolphin Plugins
 P,kolourpaint,KolourPaint
 P,latte-dock,Latte Dock
 P,plasma-browser-integration,Plasma Browser Integration
+S,appmenu-applet,Window AppMenu Applet
 
 =Browsers
 P,firefox,Firefox
@@ -69,3 +78,6 @@ P,steam,Steam
 P,transmission-qt,Transmission
 A,tusk,Tusk
 A,tuxguitar,Tuxguitar
+
+=Config
+C,,Enable Magic SysRq key,echo "kernel.sysrq = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf

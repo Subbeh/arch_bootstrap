@@ -1,0 +1,12 @@
+TMPDIR=$(mktemp -d)
+cd $TMPDIR
+
+git clone https://anongit.kde.org/extra-cmake-modules
+cd extra-cmake-modules
+mkdir build && cd build    
+cmake ..
+make && sudo make install
+
+cd $TMPDIR
+git clone https://github.com/psifidotos/applet-window-appmenu.git
+./install.sh
