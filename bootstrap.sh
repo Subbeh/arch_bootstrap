@@ -99,7 +99,7 @@ read_progs() {
       continue
     fi
 
-    [[ ! $tag =~ ^[SPA] ]] && continue
+    [[ ! $tag =~ ^[SPAC] ]] && continue
     job_list[$((++id))]=$id,$tag,$cat,$name,$desc,$cmd
     options+=($id "$desc" ${checkbox:-off})
   done < $1

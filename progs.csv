@@ -29,7 +29,7 @@ P,zip unzip,zip
 P,wget,wget
 P,tmux,tmux
 A,hollywood,hollywood
-A,zsh-fast-syntax-highlighting,zsh-fast-syntax-highlighting
+P,nmap,nmap
 
 =Tools
 A,timeshift,Timeshift
@@ -78,6 +78,7 @@ P,steam,Steam
 P,transmission-qt,Transmission
 A,tusk,Tusk
 A,tuxguitar,Tuxguitar
+A,teams,MS Teams
 
 =Config
 C,,Enable Magic SysRq key,echo "kernel.sysrq = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
