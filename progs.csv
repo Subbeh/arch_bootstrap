@@ -1,16 +1,34 @@
 =System
-P,archlinux-keyring,Arch Linux PGP keyring
-P,dhcpcd,DHCP Client Daemon,sudo systemctl enable dhcpcd
-P,base-devel cmake,Build Tools (base-devel)
-P,networkmanager network-manager-applet,Network Manager
-P,npm,NodeJS
-P,jre-openjdk,Java JRE
-P,samba,samba
-P,zsh,zsh
-P,expressvpn,ExpressVPN,sudo systemctl enable expressvpn
+P,base-devel cmake binutils,Build tools (base-devel)
+P,networkmanager network-manager-applet,NetworkManager,sudo systemctl enable NetworkManager
+P,pulseaudio pulseaudio-alsa pulsemixer,PulseAudio sound server
+P,python,Python
+
+=Graphical Utilities
+P,xorg-server xorg-xwininfo xorg-minimal xorg-xinit xorg-fonts xinit,Xorg display server
+P,picom,Picom X compositor
+P,arandr,ARandR screen adjustment UI
+
+=Desktop Environment
+P,bspwm sxhkd,BSPWM window manager
+A,polybar,Polybar status bar
+P,dmenu,dmenu
+P,rofi,Rofi window switcher
+P,libnotify,libnotify desktop notifications
+
+=Terminal Emulators
+P,xterm,xterm
+P,alacritty,alacritty
+P,rxvt-unicode,rxvt
+A,st,st
+P,terminator,terminator
+P,tmux,tmux
+P,kitty,kitty
+P,termite,termite
 
 =Utils
-P,gnu-netcat,netcat
+P,xbindkeys,xbindkeys
+P,xdg-utils,xdg-utils
 P,bat,bat
 P,conky,conky
 P,fzf,fzf
@@ -19,66 +37,38 @@ A,lifx,lifx
 P,locate,locate
 P,lolcat,lolcat
 P,neofetch,neofetch
-P,net-tools,net-tools
-P,dnsutils,dnsutils
 P,redshift,redshift
 P,tree,tree
 P,vifm,vifm
-P,traceroute,traceroute
 P,zip unzip,zip
 P,wget,wget
 P,tmux,tmux
 A,hollywood,hollywood
+P,bc,bc
+
+=Netork Utils
+P,dhcpcd,DHCP client daemon,sudo systemctl enable dhcpcd
+P,gnu-netcat,netcat
+P,net-tools,net-tools
+P,dnsutils,dnsutils
+P,traceroute,traceroute
 P,nmap,nmap
 
-=Tools
-A,timeshift,Timeshift
-P,virtualbox virtualbox-host-modules-arch,VirtualBox
-A,stacer,Stacer
-P,terminator,Terminator
-P,yakuake,Yakuake
+=Shells
+P,zsh,zsh
 
-=KDE Plasma
-P,plasma,KDE Plasma,sudo systemctl enable sddm
-P,kvantum-qt5,Kvantum
-P,kvantum-theme-arc,Kvantum Arc Theme
-P,dolphin-plugins,Dolphin Plugins
-P,kolourpaint,KolourPaint
-P,latte-dock,Latte Dock
-P,plasma-browser-integration,Plasma Browser Integration
-S,appmenu-applet,Window AppMenu Applet
+=Browers
+A,brave-bin,Brave
 
-=Browsers
-P,firefox,Firefox
-P,chromium,Chromium
-P,google-chrome,Chrome
+=Fonts
+A,ttf-unifont,Unifont
+P,ttf-font-awesome,Awesome
+P,ttf-anonymous-pro,Anonymous
+P,noto-fonts,Noto
+P,ttf-linux-libertine,Libertine
 
-=Editors
-P,vim,vim,
-A,visual-studio-code-bin,Visual Studio Code
-P,atom,Atom
-P,intellij-idea-community-edition,IntelliJ IDEA
-P,kwrite,KWrite
-P,pycharm-community-edition,PyCharm IDE
-
-=Media
-P,vlc,VLC
-P,cheese,Cheese
-P,flameshot,Flameshot
-S,popcorntime,PopcornTime
-A,zoom,Zoom
-
-=Various
-P,calibre,Calibre
-A,dropbox,Dropbox
-P,filezilla,FileZilla
-A,slack,Slack
-A,spotify,Spotify
-P,steam,Steam
-P,transmission-qt,Transmission
-A,tusk,Tusk
-A,tuxguitar,Tuxguitar
-A,teams,MS Teams
-
-=Config
-C,,Enable Magic SysRq key,echo "kernel.sysrq = 1" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
+=Custom bspwm
+echo this is a test1
+echo this is a test2
+echo this is a test3
+echo this is a test4
