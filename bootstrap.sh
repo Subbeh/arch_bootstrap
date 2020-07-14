@@ -10,12 +10,10 @@
 # PURPOSE: Automate the setup of a new Arch installation by installing
 #          predefined packages and running configuration scripts
 
-
 ## Environment variables
-default_config="http://b00t.me/config"
+default_config="config"
 LOGFILE=install.log
 export DEBUG=1
-
 
 ## Main function
 main() {
@@ -24,6 +22,8 @@ main() {
     f) user_defined_steps=${OPTARG} ;;
   	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
   esac done
+
+  [ $(id -u) = 0 ] && { log -e script must not be run as root ; exit 1 ; }
   
   preprocess
 
@@ -34,8 +34,6 @@ main() {
   for choice in $choices ; do
     run_job "${job_list[$choice]}"
   done
-
-  [ -f $custom_script ] && run_script $custom_script
 }
 
 
@@ -45,8 +43,8 @@ setup() {
     config_file=$(
       whiptail \
         --title "Config File" \
-        --inputbox "\nPlease enter the config file location.\nThis can be a local file or a hosted file.\n\n " \
-        18 78 ${1:-$default_config} \
+        --inputbox "\nPlease enter the config file location. This can be a local file or a hosted file (starting with http://): " \
+        10 78 ${1:-$default_config} \
         3>&1 1>&2 2>&3 3>&1-
     ) || exit
 
@@ -81,23 +79,29 @@ read_config() {
         2>&1 >/dev/tty)" " || exit
   }
 
-  while IFS=, read -r tag name desc cmd ; do
-    if [[ $tag == "=CustomScript" ]] ; then
-      custom_script=$(mktemp)
-      sed '1,/=CustomScript/d' $1 > $custom_script
-      break
-    elif [[ $tag =~ ^= ]] ; then
+  while IFS=, read -r tag name cmd desc ; do
+    [[ $tag == "=CMD" ]] && break;
+    if [[ $tag =~ ^= ]] ; then
       [[ "$options" ]] && _dlg
       options=()
       cat=${tag/=/}
       continue
     fi
 
-    [[ ! $tag =~ ^[SPAC] ]] && continue
+    [[ ! $tag =~ ^[PAC] ]] && continue
     job_list[$((++id))]=$id,$tag,$cat,$name,$desc,$cmd
 
     options+=($id "$desc" ${checkbox:-off})
   done < $1
+
+  # extract custom scripts
+  scriptdir=$(mktemp -d)
+  gawk -F'[: ]' -v sd="$scriptdir/" '
+    match($0, /=CMD ([^:]*):(.*)/, a) { print a[2] > sd a[1] }
+    /^=CMD/ { script=$2 ; next }
+    /^=/ && script { script="" }
+    script { print $0 > sd script ; next }
+    ' $1
 
   [[ "$options" ]] && _dlg
   clear
@@ -107,7 +111,6 @@ read_config() {
 ## Pre-processing - install build packages and AUR helper
 preprocess() {
   log running prerequisites
-  [ $(id -u) = 0 ] && { log -e script must not be run as root ; exit 1 ; }
 
   prereq=(dialog curl git binutils make gcc pkg-config fakeroot)
   for pkg in ${prereq[@]} ; do
@@ -124,7 +127,6 @@ preprocess() {
 run_job() {
   IFS=',' read -r id tag cat name desc cmd <<< "$@"
   case $tag in
-    S) run_script $name ;;
     P) install_pkg $name ;;
     A) install_pkg -A $name ;;
     C) $name ;;
@@ -164,16 +166,24 @@ log() {
   printf "[$(date --rfc-3339=seconds)] $l: $*\n"
 }
 
+cleanup() {
+  rm -rf $err $dbg $scriptdir 2>/dev/null
+  tput rmcup || clear
+  printf "logfile: %s\n" "$LOGFILE"
+  kill $(jobs -p)
+  exit
+}
 
 > $LOGFILE
 exec > >(tee -a $LOGFILE)
 exec 2>&1
 
 tput smcup
-trap 'tput rmcup || clear; printf "logfile: %s\n" "$LOGFILE"; exit 0' SIGINT EXIT
+trap 'cleanup' 1 2 EXIT
 
 export -f log
 err="$(mktemp)" ; dbg="$(mktemp)"
+
 tail -f $err 2>/dev/null | while IFS= read line ; do log -e $line ; done &
 tail -f $dbg 2>/dev/null | while IFS= read line ; do log -d $line ; done &
 

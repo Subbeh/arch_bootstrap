@@ -1,0 +1,100 @@
+# BOOTSTRAP CONFIG FILE
+#
+# format:
+# =<Category>
+# <tag>, [name], [command-name], <description>
+#
+# tag:
+#   P: package (pacman)
+#   A: AUR package (yay)
+#   C: custom command (combined with "=CMD" entry)
+# name: package name
+# command-name: name of "=CMD" entry
+# description: description of item
+#
+# OR
+#
+# =CMD name: <<system command to run>
+# =CMD
+# <system commands to run>
+# <...>
+#
+# Please note: =CMD sections must be added at the end, after categories
+
+=System
+P,base-devel cmake binutils,,Build tools (base-devel)
+P,networkmanager network-manager-applet,enable-networkmanager,NetworkManager
+P,pulseaudio pulseaudio-alsa pulsemixer,,PulseAudio sound server
+P,python,,Python
+
+=Graphical Utilities
+P,xorg-server xorg-xwininfo xorg-minimal xorg-xinit xorg-fonts xinit,,Xorg display server
+P,picom,,Picom X compositor
+P,arandr,,ARandR screen adjustment UI
+
+=Desktop Environment
+P,bspwm sxhkd,,BSPWM window manager
+A,polybar,,Polybar status bar
+P,dmenu,,dmenu
+P,rofi,,Rofi window switcher
+P,libnotify,,libnotify desktop notifications
+
+=Terminal Emulators
+P,xterm,,xterm
+P,alacritty,,alacritty
+P,rxvt-unicode,,rxvt
+A,st,,st
+P,terminator,,terminator
+P,tmux,,tmux
+P,kitty,,kitty
+P,termite,,termite
+
+=Utils
+P,xbindkeys,,xbindkeys
+P,xdg-utils,,xdg-utils
+P,bat,,bat
+P,conky,,conky
+P,fzf,,fzf
+P,htop,,htop
+A,lifx,,lifx
+P,locate,,locate
+P,lolcat,,lolcat
+P,neofetch,,neofetch
+P,redshift,,redshift
+P,tree,,tree
+P,vifm,,vifm
+P,zip unzip,,zip
+P,wget,,wget
+P,tmux,,tmux
+A,hollywood,,hollywood
+P,bc,,bc
+
+=Netork Utils
+P,dhcpcd,enable-dhcpcp,DHCP client daemon
+P,gnu-netcat,,netcat
+P,net-tools,,net-tools
+P,dnsutils,,dnsutils
+P,traceroute,,traceroute
+P,nmap,,nmap
+
+=Shells
+P,zsh,,zsh
+
+=Browers
+A,brave-bin,,Brave
+
+=Fonts
+A,ttf-unifont,,Unifont
+P,ttf-font-awesome,,Awesome
+P,ttf-anonymous-pro,,Anonymous
+P,noto-fonts,,Noto
+P,ttf-linux-libertine,,Libertine
+
+=Custom
+C,,dotfiles,Dotfiles
+
+=CMD enable-dhcpcp:sudo systemctl enable dhcpcd
+=CMD enable-networkmanager:sudo systemctl enable NetworkManager
+
+=CMD bspwm
+mkdir -p .config{bspwm,sxhkd}
