@@ -8,20 +8,30 @@
 # PLATFORM: Arch based Linux distributions
 #
 # PURPOSE: Automate the setup of a new Arch installation by installing
-#          predefined packages and running configuration scripts
+#          predefined packages and running configuration scripts.
+#          Based on Luke Smith's LARB script here: https://larbs.xyz/
+## Usage
+usage="
+Optional arguments for custom use:
+  -f: Config file
+  -h: Show this message\n
+"
 
 ## Environment variables
 default_config="config"
 LOGFILE=install.log
 export DEBUG=1
 
+
+while getopts "hf:" o ; do case "${o}" in
+  h) printf "$usage" && exit ;;
+  f) user_defined_steps=${OPTARG} ;;
+  *) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
+esac done
+
+
 ## Main function
 main() {
-  while getopts "hf:a:" o ; do case "${o}" in
-    h) printf "Optional arguments for custom use:\\n  -f: Dependencies and programs csv\\n  -h: Show this message\\n" && exit ;;
-    f) user_defined_steps=${OPTARG} ;;
-  	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
-  esac done
 
   [ $(id -u) = 0 ] && { log -e script must not be run as root ; exit 1 ; }
   
@@ -129,10 +139,9 @@ run_job() {
   case $tag in
     P) install_pkg $name ;;
     A) install_pkg -A $name ;;
-    C) $name ;;
   esac
 
-  [ "$cmd" ] && catch $cmd
+  [ "$cmd" ] && run_script $cmd
 }
 
 
@@ -151,8 +160,8 @@ install_pkg() {
 ## Run custom script
 run_script() {
   log running script "\e[1;96m$1\e[0m"
-  [ ! -f $1 ] && { log -e script file \'$1\' does not exist ; return ; }
-  catch source "$1" 
+  [ ! -f "${scriptdir:?not set}/$1" ] && { log -e script \'$1\' is not defined ; return ; }
+  catch source "${scriptdir:?not set}/$1"
 }
 
 

@@ -1,4 +1,4 @@
-# BOOTSTRAP CONFIG FILE
+#      BOOTSTRAP CONFIG FILE
 #
 # format:
 # =<Category>
@@ -12,7 +12,7 @@
 # command-name: name of "=CMD" entry
 # description: description of item
 #
-# OR
+#               OR
 #
 # =CMD name: <<system command to run>
 # =CMD
@@ -22,6 +22,7 @@
 # Please note: =CMD sections must be added at the end, after categories
 
 =System
+C,,test,Test
 P,base-devel cmake binutils,,Build tools (base-devel)
 P,networkmanager network-manager-applet,enable-networkmanager,NetworkManager
 P,pulseaudio pulseaudio-alsa pulsemixer,,PulseAudio sound server
@@ -95,6 +96,9 @@ C,,dotfiles,Dotfiles
 
 =CMD enable-dhcpcp:sudo systemctl enable dhcpcd
 =CMD enable-networkmanager:sudo systemctl enable NetworkManager
+
+=CMD dotfiles
+git clone https://github.com/subbeh/dotfiles.git ~/.dotfiles
 
 =CMD bspwm
 mkdir -p .config{bspwm,sxhkd}
