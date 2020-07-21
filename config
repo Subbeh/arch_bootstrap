@@ -4,13 +4,13 @@
 # =<Category>
 # <tag>, [name], [command-name], <description>
 #
-# tag:
-#   P: package (pacman)
-#   A: AUR package (yay)
-#   C: custom command (combined with "=CMD" entry)
-# name: package name
-# command-name: name of "=CMD" entry
-# description: description of item
+# - tag:
+#       - P: package (pacman)
+#       - A: AUR package (yay)
+#       - C: custom command (combined with "=CMD" entry)
+# - name: package name
+# - command-name: name of "=CMD" entry
+# - description: description of item
 #
 #               OR
 #
@@ -22,11 +22,10 @@
 # Please note: =CMD sections must be added at the end, after categories
 
 =System
-C,,test,Test
 P,base-devel cmake binutils,,Build tools (base-devel)
 P,networkmanager network-manager-applet,enable-networkmanager,NetworkManager
 P,pulseaudio pulseaudio-alsa pulsemixer,,PulseAudio sound server
-P,python,,Python
+P,openssh,,OpenSSH
 
 =Graphical Utilities
 P,xorg-server xorg-xwininfo xorg-minimal xorg-xinit xorg-fonts xinit,,Xorg display server
@@ -69,6 +68,9 @@ P,wget,,wget
 P,tmux,,tmux
 A,hollywood,,hollywood
 P,bc,,bc
+P,hwinfo,,hwinfo
+P,man-db,,man-db
+P,bash-completion,,bash-completion
 
 =Netork Utils
 P,dhcpcd,enable-dhcpcp,DHCP client daemon
@@ -77,6 +79,7 @@ P,net-tools,,net-tools
 P,dnsutils,,dnsutils
 P,traceroute,,traceroute
 P,nmap,,nmap
+P,sshfs,,SSHFS
 
 =Shells
 P,zsh,,zsh
@@ -98,7 +101,9 @@ C,,dotfiles,Dotfiles
 =CMD enable-networkmanager:sudo systemctl enable NetworkManager
 
 =CMD dotfiles
+install_pkg stow
 git clone https://github.com/subbeh/dotfiles.git ~/.dotfiles
+~/.dotfiles/setup.sh -s base root
 
 =CMD bspwm
 mkdir -p .config{bspwm,sxhkd}

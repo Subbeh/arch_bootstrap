@@ -18,25 +18,33 @@ Optional arguments for custom use:
 "
 
 ## Environment variables
-default_config="config"
+default_config="http://192.168.1.18/config_test"
 LOGFILE=install.log
 export DEBUG=1
 
 
 while getopts "hf:" o ; do case "${o}" in
-  h) printf "$usage" && exit ;;
   f) user_defined_steps=${OPTARG} ;;
-  *) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
+  h|*) printf "$usage" && exit ;;
 esac done
 
 
 ## Main function
 main() {
 
-  [ $(id -u) = 0 ] && { log -e script must not be run as root ; exit 1 ; }
+  if [ $(id -u) = 0 ] ; then
+    whiptail \
+      --title 'Error' \
+      --msgbox "Please avoid running this as root" \
+      10 40
+    exit 1
+  fi
+
+  # cache password
+  sudo -v
   
   preprocess
-
+  sleep 2
   setup $user_defined_steps
 
   read_config $config
@@ -44,6 +52,24 @@ main() {
   for choice in $choices ; do
     run_job "${job_list[$choice]}"
   done
+}
+
+
+## Pre-processing - install build packages and AUR helper
+preprocess() {
+  log running prerequisites
+
+  log refreshing package databases
+  catch sudo pacman --noconfirm -Syy
+
+  prereq=(dialog curl git binutils make gcc pkg-config fakeroot)
+  for pkg in ${prereq[@]} ; do
+    install_pkg $pkg
+  done
+
+  if [ ! $(pacman -Qq yay 2>/dev/null) ] ; then
+    install_git yay https://aur.archlinux.org/yay.git
+  fi
 }
 
 
@@ -84,7 +110,7 @@ read_config() {
         --separate-output \
         --checklist \
         "$cat" \
-        $((${#options[@]}/3+7)) 0 0 \
+        0 0 0 \
         "${options[@]}" \
         2>&1 >/dev/tty)" " || exit
   }
@@ -101,7 +127,7 @@ read_config() {
     [[ ! $tag =~ ^[PAC] ]] && continue
     job_list[$((++id))]=$id,$tag,$cat,$name,$desc,$cmd
 
-    options+=($id "$desc" ${checkbox:-off})
+    options+=($id "${desc:-$name}" ${checkbox:-off})
   done < $1
 
   # extract custom scripts
@@ -118,27 +144,13 @@ read_config() {
 }
 
 
-## Pre-processing - install build packages and AUR helper
-preprocess() {
-  log running prerequisites
-
-  prereq=(dialog curl git binutils make gcc pkg-config fakeroot)
-  for pkg in ${prereq[@]} ; do
-    install_pkg $pkg
-  done
-
-  if [ ! $(pacman -Qq yay 2>/dev/null) ] ; then
-    install_git yay https://aur.archlinux.org/yay.git
-  fi
-}
-
-
 ## Run jobs based on tag
 run_job() {
   IFS=',' read -r id tag cat name desc cmd <<< "$@"
   case $tag in
     P) install_pkg $name ;;
     A) install_pkg -A $name ;;
+    C) cmd=${cmd:-$name} ;;
   esac
 
   [ "$cmd" ] && run_script $cmd
@@ -148,12 +160,23 @@ run_job() {
 ## Run Pacman/AUR helper
 install_pkg() {
   [ "$1" == "-A" ] && { aur=yay ; shift ; }
-  if [ ! $(pacman -Qq $1 2>/dev/null) ] ; then
-    log installing ${aur:+AUR} package "\e[1;96m$1\e[0m"
-    catch ${aur:-sudo pacman} --noconfirm --needed -S "$1"
-  else
-    log package "\e[1;96m$1\e[0m" is already installed
-  fi
+    for pkg in "$@" ; do
+    if [ ! $(pacman -Qq $pkg 2>/dev/null) ] ; then
+      log installing ${aur:+AUR} package "\e[1;96m$pkg\e[0m"
+      catch ${aur:-sudo pacman} --noconfirm --needed -S "$pkg"
+    else
+      log package "\e[1;96m$pkg\e[0m" is already installed
+    fi
+  done
+}
+
+
+## Install from git repository
+install_git() {
+  log installing package "\e[1;96m$1\e[0m"
+  TEMP_DIR="$(mktemp -d)"
+  git clone "$2" $TEMP_DIR >/dev/null 2>&1
+  (cd $TEMP_DIR && catch makepkg -csi --noconfirm)
 }
 
 
@@ -170,15 +193,18 @@ log() {
   case $1 in
     -d) [ ${DEBUG:-0} -ne 1 ] && return ; l=DEBUG ; shift ;;
     -e) l=ERROR ; shift ;;
+    -w) l=WARNING ; shift ;;
     *)  l=INFO ;;
   esac
-  printf "[$(date --rfc-3339=seconds)] $l: $*\n"
+  printf "[$(date --rfc-3339=seconds)] $l: "
+  echo -e $*
 }
 
 cleanup() {
+  sleep 1
   rm -rf $err $dbg $scriptdir 2>/dev/null
   tput rmcup || clear
-  printf "logfile: %s\n" "$LOGFILE"
+  printf "FINISHED\nlogfile: %s\n" "$LOGFILE"
   kill $(jobs -p)
   exit
 }
@@ -193,7 +219,7 @@ trap 'cleanup' 1 2 EXIT
 export -f log
 err="$(mktemp)" ; dbg="$(mktemp)"
 
-tail -f $err 2>/dev/null | while IFS= read line ; do log -e $line ; done &
+tail -f $err 2>/dev/null | while IFS= read line ; do log -w $line ; done &
 tail -f $dbg 2>/dev/null | while IFS= read line ; do log -d $line ; done &
 
 catch() { $@ >>$dbg 2>>$err; }
