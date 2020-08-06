@@ -3,6 +3,7 @@ P,pacman-contrib,mirrorlist,mirror list optimizer
 P,base-devel cmake binutils boost,,build tools (base-devel)
 P,openssh,enable-sshd
 P,zsh,ohmyzsh
+P,virtualbox-guest-utils,enable-virtualbox
 
 =Graphical Utilities
 P,xorg-server xorg-apps xorg-xinit xterm,,xorg display server
@@ -12,55 +13,56 @@ P,arandr
 =Desktop Environment
 P,lightdm lightdm-gtk-greeter,enable-lightdm
 P,bspwm sxhkd,,bspwm window manager
+P,dunst libnotify notification-daemon,,notification manager
+P,termite
 A,polybar
 P,nitrogen
-P,dmenu
-P,libnotify
+A,dmenu2
 P,rofi
+P,xclip
 
 =Utilities
-P,termite
 P,wget
 P,man-db
 P,ranger
 P,source-highlight
 P,fzf
 P,pkgfile
+P,xdg-utils
+P,ripgrep
+P,tree
+P,bat
+P,ncdu
 
 =GUI Apps
 P,brave-bin
 
 =GUI Fonts
-A,ttf-ms-fonts
-A,nerd-fonts-hack
-A,ttf-unifont
-P,ttf-font-awesome
-P,ttf-anonymous-pro
-P,noto-fonts
-P,ttf-linux-libertine
-A,ttf-meslo-nerd-font-powerlevel10k
+A,nerd-fonts-fira-code
 
 =Custom
 P,stow,dotfiles,dotfiles
+P,nodejs,lifx,lifx controller
+
 
 =CMD enable-sshd: sudo systemctl enable sshd
 =CMD enable-lightdm: sudo systemctl enable lightdm
+=CMD enable-virtualbox: sudo systemctl enable vboxservice
+=CMD vim: mkdir -p $XDG_DATA_HOME/vim/{backup,swap,undo,view}
+=CMD lifx: sudo npm install -g lifx-client
 
 =CMD dotfiles
 git clone https://github.com/subbeh/dotfiles.git ~/.dotfiles
-mv ~/.bashrc ~/.bashrc_bak
+rm ~/.bashrc ~/.bash_profile 2>/dev/null
 $HOME/.dotfiles/dot refresh -g -p
 
 =CMD polybar
-mkdir ~/.local/share/fonts 2>/dev/null
-cp -r ~/.local/share/polybar/polybar-themes/polybar-1/fonts/* ~/.local/share/fonts
-fc-cache -v
-cp -r ~/.local/share/polybar/polybar-themes/polybar-1/* ~/.config/polybar
 
 =CMD ohmyzsh
 [ -d ~/.config/zsh ] && mv ~/.config/zsh ~/.config/zsh_bak
-ZSH=~/.config/zsh sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+ZSH=~/.local/share/oh-my-zsh sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 
 =CMD mirrorlist
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist_bak && \
 curl -s "https://www.archlinux.org/mirrorlist/?country=AU&country=SG&country=ID&country=NZ&protocol=https&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 5 - | sudo tee /etc/pacman.d/mirrorlist
+

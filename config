@@ -29,7 +29,7 @@ P,openssh,,OpenSSH
 
 =Graphical Utilities
 P,xorg-server xorg-xwininfo xorg-minimal xorg-xinit xorg-fonts xinit,,Xorg display server
-P,picom,,Picom X compositor
+P,picom,,Picom  compositor
 P,arandr,,ARandR screen adjustment UI
 
 =Desktop Environment
