@@ -11,9 +11,10 @@
 #          predefined packages and running configuration scripts.
 #          Based on Luke Smith's LARB script here: https://larbs.xyz/
 ## Usage
+
+# TODO
 usage="
 Optional arguments for custom use:
-  -f: Config file
   -h: Show this message\n
 "
 
@@ -23,8 +24,7 @@ LOGFILE=install.log
 export DEBUG=1
 
 
-while getopts "hf:" o ; do case "${o}" in
-  f) user_defined_steps=${OPTARG} ;;
+while getopts "h" o ; do case "${o}" in
   h|*) printf "$usage" && exit ;;
 esac done
 
@@ -45,7 +45,7 @@ main() {
   
   preprocess
   sleep 2
-  setup $user_defined_steps
+  setup
 
   read_config $config
 
@@ -63,6 +63,13 @@ preprocess() {
   catch sudo pacman --noconfirm -Syy
 
   prereq=(dialog curl git binutils make gcc pkg-config fakeroot)
+  whiptail --title "Preprocess" \
+           --yesno \
+           --yes-button "Continue" \
+           --no-button "Exit" \
+           "The following required packages will be installed:\n\n$(printf ' • %s\n' "${prereq[@]}")" \
+           0 0 3>&1 1>&2 2>&3 3>&1- || exit
+
   for pkg in ${prereq[@]} ; do
     install_pkg $pkg
   done
@@ -75,19 +82,18 @@ preprocess() {
 
 ## Setup configuration
 setup() {
-  while : ; do
+  while true ; do
     config_file=$(
       whiptail \
         --title "Config File" \
         --inputbox "\nPlease enter the config file location. This can be a local file or a hosted file (starting with http://): " \
-        10 78 ${1:-$default_config} \
+        0 78 ${1:-$default_config} \
         3>&1 1>&2 2>&3 3>&1-
     ) || exit
 
     if [[ "${config_file:=$default_config}" =~ ^https?:// ]] ; then
       config=$(mktemp)
-      curl -sSf "$config_file" > $config;
-      [ $? -eq 0 ] && break ;
+      curl -sSf "$config_file" > $config && break
     elif [ -f "$config_file" ] ; then
       config=$config_file
       break
@@ -100,12 +106,12 @@ setup() {
 }
 
 
-# Process the configuration file
+## Process the configuration file
 read_config() {
   [ -r "${1:?not set}" ] || { log -e cannot find $1 ; exit 1 ; }
   _dlg() { 
     choices+=$(
-      dialog \
+      dialog --keep-tite \
         --backtitle "Arch Bootstrap Installation Script" \
         --separate-output \
         --checklist \
@@ -174,9 +180,9 @@ install_pkg() {
 ## Install from git repository
 install_git() {
   log installing package "\e[1;96m$1\e[0m"
-  TEMP_DIR="$(mktemp -d)"
-  git clone "$2" $TEMP_DIR >/dev/null 2>&1
-  (cd $TEMP_DIR && catch makepkg -csi --noconfirm)
+  git_dir="$(mktemp -d)"
+  git clone "$2" $git_dir >/dev/null 2>&1
+  (cd $git_dir && catch makepkg -csi --noconfirm)
 }
 
 
@@ -191,7 +197,7 @@ run_script() {
 ## Logging and error handling
 log() {
   case $1 in
-    -d) [ ${DEBUG:-0} -ne 1 ] && return ; l=DEBUG ; shift ;;
+    -d) (($DEBUG)) || return ; l=DEBUG ; shift ;;
     -e) l=ERROR ; shift ;;
     -w) l=WARNING ; shift ;;
     *)  l=INFO ;;
@@ -202,8 +208,8 @@ log() {
 
 cleanup() {
   sleep 1
-  rm -rf $err $dbg $scriptdir 2>/dev/null
-  tput rmcup || clear
+  rm -rf $err $dbg $scriptdir $git_dir 2>/dev/null
+  tput rmcup
   printf "FINISHED\nlogfile: %s\n" "$LOGFILE"
   kill $(jobs -p)
   exit
@@ -217,10 +223,10 @@ tput smcup
 trap 'cleanup' 1 2 EXIT
 
 export -f log
-err="$(mktemp)" ; dbg="$(mktemp)"
+{ err="$(mktemp -u err-pipe.XXX)" ; dbg="$(mktemp -u dbg-pipe.XXX)"; } && mkfifo $err $dbg
 
-tail -f $err 2>/dev/null | while IFS= read line ; do log -w $line ; done &
-tail -f $dbg 2>/dev/null | while IFS= read line ; do log -d $line ; done &
+cat <> $err 2>/dev/null | while IFS= read line ; do log -w $line ; done &
+cat <> $dbg 2>/dev/null | while IFS= read line ; do log -d $line ; done &
 
 catch() { $@ >>$dbg 2>>$err; }
 

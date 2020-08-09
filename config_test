@@ -35,7 +35,7 @@ P,bat
 P,ncdu
 
 =GUI Apps
-P,brave-bin
+A,brave-bin
 
 =GUI Fonts
 A,nerd-fonts-fira-code
