@@ -38,6 +38,7 @@ A,polybar,,Polybar status bar
 P,dmenu,,dmenu
 P,rofi,,Rofi window switcher
 P,libnotify,,libnotify desktop notifications
+P,nitrogen,,nitrogen
 
 =Terminal Emulators
 P,xterm,,xterm
@@ -80,6 +81,7 @@ P,dnsutils,,dnsutils
 P,traceroute,,traceroute
 P,nmap,,nmap
 P,sshfs,,SSHFS
+A,networkmanager-dmenu-git,,networkmanager-dmenu
 
 =Shells
 P,zsh,,zsh
@@ -106,4 +108,4 @@ git clone https://github.com/subbeh/dotfiles.git ~/.dotfiles
 ~/.dotfiles/setup.sh -s base root
 
 =CMD bspwm
-mkdir -p .config{bspwm,sxhkd}
+mkdir -p .config/{bspwm,sxhkd}

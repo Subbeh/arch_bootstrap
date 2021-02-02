@@ -2,14 +2,13 @@
 #
 # SCRIPT: bootstrap.sh
 # AUTHOR: Steven Terwindt <info@sterwindt.com>
-# DATE:   2020-07-05
+# DATE:   2021-01-05
 # REV:    1.0
 #
 # PLATFORM: Arch based Linux distributions
 #
 # PURPOSE: Automate the setup of a new Arch installation by installing
 #          predefined packages and running configuration scripts.
-#          Based on Luke Smith's LARB script here: https://larbs.xyz/
 ## Usage
 
 # TODO
@@ -223,7 +222,7 @@ tput smcup
 trap 'cleanup' 1 2 EXIT
 
 export -f log
-{ err="$(mktemp -u err-pipe.XXX)" ; dbg="$(mktemp -u dbg-pipe.XXX)"; } && mkfifo $err $dbg
+{ err="$(mktemp -u /tmp/err-pipe.XXX)" ; dbg="$(mktemp -u /tmp/dbg-pipe.XXX)"; } && mkfifo $err $dbg
 
 cat <> $err 2>/dev/null | while IFS= read line ; do log -w $line ; done &
 cat <> $dbg 2>/dev/null | while IFS= read line ; do log -d $line ; done &
