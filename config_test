@@ -7,11 +7,16 @@ P,virtualbox-guest-utils,enable-virtualbox
 A,nordvpn-bin,enable-nordvpn
 A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 P,python-pip
+P,alsa-utils pulseaudio-alsa pulseaudio-bluetooth bluez-utils,,audio tools
 
 =Graphical Utilities
 P,xorg-server xorg-apps xorg-xinit xterm,,xorg display server
 P,picom,,picom compositor
 P,arandr
+
+=Sound utilities
+P,alsa-utils 
+P,pulseaudio-alsa
 
 =Desktop Environment
 P,lightdm lightdm-gtk-greeter,enable-lightdm
@@ -56,7 +61,7 @@ P,nodejs npm,lifx,lifx controller
 =CMD enable-sshd: sudo systemctl enable sshd
 =CMD enable-lightdm: sudo systemctl enable lightdm
 =CMD enable-virtualbox: sudo systemctl enable vboxservice
-=CMD enable-nordvpn: sudo systemctl enable nordvpnd && sudo usermod -aG nordvpn $USER
+=CMD enable-nordvpn: sudo systemctl enable nordvpnd && groupadd -r nordvpn && sudo usermod -aG nordvpn $USER
 =CMD vim: mkdir -p $XDG_DATA_HOME/vim/{backup,swap,undo,view} && vim -c "PlugUpdate"
 =CMD lifx: sudo npm install -g lifx-client
 

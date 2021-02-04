@@ -1,3 +1,0 @@
-# disable system beep
-sudo rmmod pcspkr
-echo "blacklist pcspkr" >/dev/null | sudo tee /etc/modprobe.d/nobeep.conf
