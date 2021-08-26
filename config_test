@@ -7,7 +7,8 @@ P,virtualbox-guest-utils,enable-virtualbox
 A,nordvpn-bin,enable-nordvpn
 A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 P,python-pip
-P,alsa-utils pulseaudio-alsa pulseaudio-bluetooth bluez-utils,,audio tools
+A,bluez bluez-utils rofi-bluetooth-git,bluetooth,bluetooth tools
+P,alsa-utils pulseaudio-alsa pulseaudio-bluetooth pavucontrol,,audio tools
 
 =Graphical Utilities
 P,xorg-server xorg-apps xorg-xinit xterm,,xorg display server
@@ -62,11 +63,12 @@ P,nodejs npm,lifx,lifx controller
 =CMD enable-lightdm: sudo systemctl enable lightdm
 =CMD enable-virtualbox: sudo systemctl enable vboxservice
 =CMD enable-nordvpn: sudo systemctl enable nordvpnd && groupadd -r nordvpn && sudo usermod -aG nordvpn $USER
+=CMD enable-bluetooth: sudo systemctl enable bluetooth
 =CMD vim: mkdir -p $XDG_DATA_HOME/vim/{backup,swap,undo,view} && vim -c "PlugUpdate"
 =CMD lifx: sudo npm install -g lifx-client
 
 =CMD dotfiles
-git clone https://github.com/subbeh/dotfiles.git ~/.dotfiles
+git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
 rm ~/.bashrc ~/.bash_profile 2>/dev/null
 $HOME/.dotfiles/dot load -g -p
 
