@@ -27,7 +27,7 @@ P,base-devel cmake binutils boost,,build tools (base-devel)
 P,openssh,enable-sshd
 P,zsh,zsh
 P,virtualbox-guest-utils,enable-virtualbox
-A,nordvpn-bin,enable-nordvpn
+A,nordvpn-bin,nordvpn
 A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 P,python-pip
 A,bluez bluez-utils rofi-bluetooth-git,bluetooth,bluetooth tools
@@ -81,18 +81,21 @@ A,nerd-fonts-fira-code
 P,stow,dotfiles,dotfiles
 P,nodejs npm,lifx,lifx controller
 
+=Configuration
+C,,reload-fonts,reload fonts
 
 =CMD enable-sshd: sudo systemctl enable sshd
 =CMD enable-lightdm: sudo systemctl enable lightdm
 =CMD enable-virtualbox: sudo systemctl enable vboxservice
-=CMD enable-nordvpn: sudo systemctl enable nordvpnd && groupadd -r nordvpn && sudo usermod -aG nordvpn $USER
 =CMD enable-bluetooth: sudo systemctl enable bluetooth
 =CMD vim: mkdir -p $XDG_DATA_HOME/vim/{backup,swap,undo,view} && vim +PlugUpdate +qall
 =CMD lifx: sudo npm install -g lifx-client
+=CMD reload-fonts: fc-cache -f
 
 =CMD dotfiles
 git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
 (cd ~/.dotfiles && git submodule init && git submodule update)
+(cd ~/.dotfiles/fonts/.local/share/fonts && git submodule init && git submodule update)
 rm ~/.bashrc ~/.bash_profile 2>/dev/null
 $HOME/.dotfiles/dot load -g -p
 
@@ -112,3 +115,10 @@ chsh -s $(which zsh)
 sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist_bak && \
 #curl -s "https://www.archlinux.org/mirrorlist/?country=AU&country=SG&country=ID&country=NZ&protocol=https&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 5 - | sudo tee /etc/pacman.d/mirrorlist
 sudo pacman-mirrors -f5
+
+=CMD nordvpn
+sudo groupadd -r nordvpn
+sudo usermod -aG nordvpn $USER
+sudo systemctl enable nordvpnd
+sudo systemctl start nordvpn
+nordvpn login
