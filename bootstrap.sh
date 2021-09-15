@@ -18,7 +18,7 @@ Optional arguments for custom use:
 "
 
 ## Environment variables
-default_config="http://192.168.1.18/config_test"
+default_config="http://config.b00t.me"
 LOGFILE=install.log
 export DEBUG=1
 
@@ -85,14 +85,14 @@ setup() {
     config_file=$(
       whiptail \
         --title "Config File" \
-        --inputbox "\nPlease enter the config file location. This can be a local file or a hosted file (starting with http://): " \
+        --inputbox "\nPlease enter the config file location. This can be a local file or a hosted file (starting with http(s)://): " \
         0 78 ${1:-$default_config} \
         3>&1 1>&2 2>&3 3>&1-
     ) || exit
 
     if [[ "${config_file:=$default_config}" =~ ^https?:// ]] ; then
       config=$(mktemp)
-      curl -sSf "$config_file" > $config && break
+      curl -sSfL "$config_file" > $config && break
     elif [ -f "$config_file" ] ; then
       config=$config_file
       break
