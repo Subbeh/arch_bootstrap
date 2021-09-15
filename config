@@ -92,6 +92,7 @@ P,nodejs npm,lifx,lifx controller
 
 =CMD dotfiles
 git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
+(cd ~/.dotfiles && git submodule init && git submodule update)
 rm ~/.bashrc ~/.bash_profile 2>/dev/null
 $HOME/.dotfiles/dot load -g -p
 
