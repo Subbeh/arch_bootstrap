@@ -30,7 +30,7 @@ P,virtualbox-guest-utils,enable-virtualbox
 A,nordvpn-bin,nordvpn
 A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 P,python-pip
-A,bluez bluez-utils rofi-bluetooth-git,bluetooth,bluetooth tools
+A,bluez bluez-utils rofi-bluetooth-git,enable-bluetooth,bluetooth tools
 P,alsa-utils pulseaudio-alsa pulseaudio-bluetooth pavucontrol,,audio tools
 
 =Graphical Utilities
