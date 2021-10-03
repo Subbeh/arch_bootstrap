@@ -12,7 +12,7 @@ Simply run the following command on your newly installed Arch environment to sta
 curl -L b00t.me | bash
 ```
 
-The script by default points to the config file located at the address http://config.b00t.me but can be changed to any local or remote file.
+The script by default points to the config file located at the address http://config.b00t.me but can be changed to any local or remote file during installation.
 
 ## Config
 
