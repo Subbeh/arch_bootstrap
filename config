@@ -61,7 +61,7 @@ A,networkmanager-dmenu
 A,betterlockscreen
 
 =Utilities
-P,zip unzip unrar p7zip gzip bzip2,,archiving/compression tools
+P,zip unzip unrar p7zip gzip bzip2 rsync,,archiving/compression tools
 P,vim,vim
 P,wget
 P,man-db
@@ -94,7 +94,7 @@ C,,enable-macspoof,spoof MAC address
 C,,mount-data,mount data
 C,,lockscreen,configure lockscreen
 
-=CMD mirrorlist: reflector -c AU --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
+=CMD mirrorlist: sudo reflector -c AU --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
 =CMD enable-sshd: sudo systemctl enable sshd
 =CMD enable-lightdm: sudo systemctl enable lightdm
 =CMD enable-virtualbox: sudo systemctl enable vboxservice
