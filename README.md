@@ -56,7 +56,9 @@ The syntax for menu entries are as follows:
 
 Depending on the construction of the meny entry line, only the tag is manditory. Either package name or description needs to specified, and the command name is fully optional.
 
-The syntax for commands are as follows:
+Custom commands start with `CMD= <name>:` and have to be defined at the end of the config file **after** the menu sections.
+
+The syntax for commands are:
 ```
 =CMD command_name: <system commands to run>
 
