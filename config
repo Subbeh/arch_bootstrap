@@ -23,7 +23,7 @@
 
 =System
 P,reflector,mirrorlist,mirror-list optimizer
-P,base-devel cmake binutils boost,,build tools (base-devel)
+P,base-devel cmake binutils boost pacman-contrib,,build tools (base-devel)
 P,openssh,enable-sshd
 P,net-tools dnsutils inetutils iproute2 macchanger,,network tools
 P,zsh,zsh
@@ -74,6 +74,8 @@ P,ripgrep
 P,tree
 P,bat
 P,ncdu
+P,neofetch
+
 
 =GUI Apps
 P,firefox
