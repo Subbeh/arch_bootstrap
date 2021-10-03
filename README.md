@@ -14,6 +14,8 @@ curl -L b00t.me | bash
 
 The script by default points to the config file located at the address http://config.b00t.me but can be changed to any local or remote file during installation.
 
+&nbsp;&nbsp;
+
 ## Config
 
 The config file is split up in sections which is represented in the GUI dialogs of the script as seen in the above capture, followed by any custom commands that are called from the menu entries.
@@ -30,6 +32,8 @@ A,polybar
 
 =CMD enable-sshd: sudo systemctl enable sshd
 ```
+
+&nbsp;&nbsp;
 
 ### Syntax
 
@@ -56,6 +60,8 @@ The syntax for menu entries are as follows:
 
 Depending on the construction of the meny entry line, only the tag is manditory. Either package name or description needs to specified, and the command name is fully optional.
 
+&nbsp;&nbsp;
+
 Custom commands start with `CMD= <name>:` and have to be defined at the end of the config file **after** the menu sections.
 
 The syntax for commands are:
@@ -74,4 +80,6 @@ command3
 command4
 ```
 
-Please refer to the config file in this repository for more examples
+&nbsp;&nbsp;
+
+Please refer to the [config file](config) in this repository for more examples
