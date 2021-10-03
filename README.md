@@ -54,7 +54,7 @@ The syntax for menu entries are as follows:
 - If description is specified, this will replace the default package name in the menu entry
 ```
 
-Depending on the construction of the meny entry line, only the tag is manditory. Either package name or description needs to specified, and the description is fully optional.
+Depending on the construction of the meny entry line, only the tag is manditory. Either package name or description needs to specified, and the command name is fully optional.
 
 The syntax for commands are as follows:
 ```
