@@ -1,6 +1,6 @@
 # Arch Bootstrap
 
-Archbootstrap is used to automate the customization of your Arch installation. This includes installing packages and running custom scripts to set up your environment.
+This script is used to automate the customization/bootstrapping of your Arch installation. This includes installing packages and running custom scripts to set up your environment.
 
 ![This is an image](bootstrap.gif)
 
