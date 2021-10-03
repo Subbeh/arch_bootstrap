@@ -37,10 +37,10 @@ A,polybar
 
 ### Syntax
 
-A section starts with `=Secion_name` and contain menu entries formatted in a comma separated line:
+A section starts with `=Section_name` and contain menu entries formatted in a comma separated line:
 
 ```
-=Secion_name
+=Section_name
 tag, package name(s), custom command name, description`
 ```
 
