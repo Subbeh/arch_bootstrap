@@ -9,8 +9,8 @@
 #       - A: AUR package (yay)
 #       - C: custom command (combined with "=CMD" entry)
 # - name: package name
-# - command-name: name of "=CMD" entry
-# - description: description of item
+# - command-name (optional): name of "=CMD" entry
+# - description (optional): description of item
 #
 #               OR
 #
@@ -22,19 +22,21 @@
 # Please note: =CMD sections must be added at the end, after categories
 
 =System
-P,pacman-contrib,mirrorlist,mirror list optimizer
+P,reflector,mirrorlist,mirror-list optimizer
 P,base-devel cmake binutils boost,,build tools (base-devel)
 P,openssh,enable-sshd
+P,net-tools dnsutils inetutils iproute2 macchanger,,network tools
 P,zsh,zsh
 P,virtualbox-guest-utils,enable-virtualbox
 A,nordvpn-bin,nordvpn
 A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 P,python-pip
-A,bluez bluez-utils rofi-bluetooth-git,enable-bluetooth,bluetooth tools
+A,bluez bluez-utils rofi-bluetooth-git fix-bt-a2dp,enable-bluetooth,bluetooth tools
 P,alsa-utils pulseaudio-alsa pulseaudio-bluetooth pavucontrol,,audio tools
+P,strace,,debugging tools
 
 =Graphical Utilities
-P,xorg-server xorg-apps xorg-xinit xterm,,xorg display server
+P,xorg-server xorg-apps xorg-xinit xterm numlockx,,xorg display server
 P,picom,,picom compositor
 P,arandr
 
@@ -56,8 +58,10 @@ A,dmenu2
 P,rofi
 P,xclip
 A,networkmanager-dmenu
+A,betterlockscreen
 
 =Utilities
+P,zip unzip unrar p7zip gzip bzip2,,archiving/compression tools
 P,vim,vim
 P,wget
 P,man-db
@@ -72,9 +76,12 @@ P,bat
 P,ncdu
 
 =GUI Apps
+P,firefox
+P,chromium
 A,brave-bin
+A,spotify spotifywm-git,,spotify
 
-=GUI Fonts
+=Fonts
 A,nerd-fonts-fira-code
 
 =Custom
@@ -82,15 +89,23 @@ P,stow,dotfiles,dotfiles
 P,nodejs npm,lifx,lifx controller
 
 =Configuration
-C,,reload-fonts,reload fonts
+C,,load-fonts,load fonts
+C,,enable-macspoof,spoof MAC address
+C,,mount-data,mount data
+C,,lockscreen,configure lockscreen
 
+=CMD mirrorlist: reflector -c AU --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
 =CMD enable-sshd: sudo systemctl enable sshd
 =CMD enable-lightdm: sudo systemctl enable lightdm
 =CMD enable-virtualbox: sudo systemctl enable vboxservice
 =CMD enable-bluetooth: sudo systemctl enable bluetooth
+=CMD zsh: chsh -s $(which zsh)
 =CMD vim: mkdir -p $XDG_DATA_HOME/vim/{backup,swap,undo,view} && vim +PlugUpdate +qall
 =CMD lifx: sudo npm install -g lifx-client
-=CMD reload-fonts: fc-cache -f
+=CMD load-fonts: for dir in $(find $XDG_DATA_HOME/fonts/ -type d) ; do (cd $dir; mkfontdir ; mkfontscale) ; done ; fc-cache -f
+=CMD enable-macspoof: sudo systemctl enable macspoof@wlan0.service
+=CMD mount-data: sudo mkdir /data 2> /dev/null ; sblk -o LABEL | grep -q Data && grep -q "\s/data\s" /etc/fstab || echo "LABEL=Data		/data	auto	auto,nouser,exec,rw,async,atime	0 0" | sudo tee -a /etc/fstab
+=CMD lockscreen: betterlockscreen -u $HOME/.local/share/wallpapers
 
 =CMD dotfiles
 git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
@@ -101,20 +116,11 @@ $HOME/.dotfiles/dot load -g -p
 
 =CMD fan-control
 grep ^dell-smm-hwmon$ /etc/modules 2> /dev/null || echo dell-smm-hwmon | sudo tee -a /etc/modules
-rep "^options dell-smm-hwmon restricted=0$" /etc/modprobe.d/dell-smm-hwmon.conf 2> /dev/null || echo options dell-smm-hwmon restricted=0 | sudo tee -a /etc/modprobe.d/dell-smm-hwmon.conf
+grep "^options dell-smm-hwmon restricted=0$" /etc/modprobe.d/dell-smm-hwmon.conf 2> /dev/null || echo options dell-smm-hwmon restricted=0 | sudo tee -a /etc/modprobe.d/dell-smm-hwmon.conf
 sudo modprobe -v i8k
 sudo systemctl enable i8kmon.service
 sudo systemctl start i8kmon.service
-
-=CMD zsh
-chsh -s $(which zsh)
-#[ -d ~/.config/zsh ] && mv ~/.config/zsh ~/.config/zsh_bak
-#ZSH=~/.local/share/oh-my-zsh sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
-=CMD mirrorlist
-sudo cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist_bak && \
-#curl -s "https://www.archlinux.org/mirrorlist/?country=AU&country=SG&country=ID&country=NZ&protocol=https&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -n 5 - | sudo tee /etc/pacman.d/mirrorlist
-sudo pacman-mirrors -f5
+sudo dell-bios-fan-control on
 
 =CMD nordvpn
 sudo groupadd -r nordvpn

@@ -11,11 +11,6 @@
 #          predefined packages and running configuration scripts.
 ## Usage
 
-# TODO
-usage="
-Optional arguments for custom use:
-  -h: Show this message\n
-"
 
 ## Environment variables
 default_config="http://config.b00t.me"
@@ -23,14 +18,8 @@ LOGFILE=install.log
 export DEBUG=1
 
 
-while getopts "h" o ; do case "${o}" in
-  h|*) printf "$usage" && exit ;;
-esac done
-
-
 ## Main function
 main() {
-
   if [ $(id -u) = 0 ] ; then
     whiptail \
       --title 'Error' \
@@ -193,6 +182,17 @@ run_script() {
 }
 
 
+## Script cleanup
+cleanup() {
+  sleep 1
+  rm -rf $err $dbg $scriptdir $git_dir 2>/dev/null
+  tput rmcup
+  printf "FINISHED\nlogfile: %s\n" "$LOGFILE"
+  kill $(jobs -p)
+  exit
+}
+
+
 ## Logging and error handling
 log() {
   case $1 in
@@ -203,15 +203,6 @@ log() {
   esac
   printf "[$(date --rfc-3339=seconds)] $l: "
   echo -e $*
-}
-
-cleanup() {
-  sleep 1
-  rm -rf $err $dbg $scriptdir $git_dir 2>/dev/null
-  tput rmcup
-  printf "FINISHED\nlogfile: %s\n" "$LOGFILE"
-  kill $(jobs -p)
-  exit
 }
 
 > $LOGFILE
