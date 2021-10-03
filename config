@@ -2,7 +2,7 @@
 #
 # format:
 # =<Category>
-# <tag>, [name], [command-name], <description>
+# <tag>, [name], [command-name], [description]
 #
 # - tag:
 #       - P: package (pacman)
@@ -74,7 +74,6 @@ P,ripgrep
 P,tree
 P,bat
 P,ncdu
-P,neofetch
 
 =GUI Apps
 P,firefox
