@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #
 # SCRIPT: bootstrap.sh
-# AUTHOR: Steven Terwindt <info@sterwindt.com>
 # DATE:   2021-01-05
 # REV:    1.0
 #
@@ -9,7 +8,6 @@
 #
 # PURPOSE: Automate the setup of a new Arch installation by installing
 #          predefined packages and running configuration scripts.
-## Usage
 
 
 ## Environment variables
