@@ -33,8 +33,6 @@ A,polybar
 =CMD enable-sshd: sudo systemctl enable sshd
 ```
 
-&nbsp;&nbsp;
-
 ### Syntax
 
 A section starts with `=Secion_name` and contain menu entries formatted in a comma separated line:
