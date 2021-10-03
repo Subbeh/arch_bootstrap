@@ -4,6 +4,8 @@ This script is used to automate the customization/bootstrapping of your Arch ins
 
 ![This is an image](bootstrap.gif)
 
+&nbsp;&nbsp;
+
 ## Usage
 
 Simply run the following command on your newly installed Arch environment to start the bootstrapping process.
