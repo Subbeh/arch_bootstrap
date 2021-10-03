@@ -6,7 +6,7 @@ This script is used to automate the customization/bootstrapping of your Arch ins
 
 ## Usage
 
-Simply run the following command on your newly instally Arch environment to start the bootstrapping process. Please do **not** run as root, and instead run it under your own user.
+Simply run the following command on your newly installed Arch environment to start the bootstrapping process. Please do **not** run as root, and instead run it under your own user.
 
 ```
 curl -L b00t.me | bash
