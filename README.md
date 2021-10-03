@@ -47,11 +47,27 @@ The syntax for menu entries are as follows:
 2. Name
 - Package name(s) to install, separated by a space
 3. Command name
-- Command to run as specified by the `=CMD:` section
+- Command to run as specified by the `=CMD <name>:` section
 4. Description
 - If description is specified, this will replace the default package name in the menu entry
 ```
 
 Depending on the construction of the meny entry line, only the tag is manditory. Either package name or description needs to specified, and the description is fully optional.
+
+The syntax for commands are as follows:
+```
+=CMD command_name: <system commands to run>
+
+Or for multiple commands:
+
+=CMD command_name1
+command1
+command2
+...
+
+=CMD command_name2
+command3
+command4
+```
 
 Please refer to the config file in this repository for more examples
