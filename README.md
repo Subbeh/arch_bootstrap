@@ -18,12 +18,6 @@ The script by default points to the config file located at the address http://co
 
 The config file is split up in sections which is represented in the GUI dialogs of the script as seen in the above capture, followed by any custom commands that are called from the menu entries.
 
-A section starts with `=Secion_name` and contain menu entries formatted in a comma separated line as 
-
-```
-tag, package name(s), custom command name, description`
-```
-
 For example:
 
 ```
@@ -38,6 +32,14 @@ A,polybar
 ```
 
 ### Syntax
+
+A section starts with `=Secion_name` and contain menu entries formatted in a comma separated line:
+
+```
+=Secion_name
+tag, package name(s), custom command name, description`
+```
+
 The syntax for menu entries are as follows:
 
 ```
