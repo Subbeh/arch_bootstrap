@@ -45,7 +45,7 @@ The syntax for menu entries are as follows:
 ```
 1. Tag
 - P: packages are from official repository
-- A: packages are from user repository (AUR) and are installed using `yay`
+- A: packages are from user repository (AUR) and are installed using the `yay` package manager
 2. Name
 - Package name(s) to install, separated by a space
 3. Command name
