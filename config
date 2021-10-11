@@ -28,15 +28,15 @@ P,openssh,enable-sshd
 P,net-tools dnsutils inetutils iproute2 macchanger,,network tools
 P,zsh,zsh
 P,virtualbox-guest-utils,enable-virtualbox
-A,nordvpn-bin,nordvpn
-A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
+A,nordvpn-bin rofi-nordvpn-git,nordvpn
 P,python-pip
-A,bluez bluez-utils rofi-bluetooth-git fix-bt-a2dp,enable-bluetooth,bluetooth tools
+A,bluez bluez-utils rofi-bluetooth-git,enable-bluetooth,bluetooth tools
 P,alsa-utils pulseaudio-alsa pulseaudio-bluetooth pavucontrol,,audio tools
 P,strace,,debugging tools
+P,tlp,enable-tlp
 
 =Graphical Utilities
-P,xorg-server xorg-apps xorg-xinit xterm numlockx,,xorg display server
+P,xorg-server xorg-apps xorg-xinit xterm numlockx xbindkeys,,xorg display server
 P,picom,,picom compositor
 P,arandr
 
@@ -49,7 +49,7 @@ P,lightdm lightdm-gtk-greeter,enable-lightdm
 P,bspwm sxhkd,,bspwm window manager
 P,dunst libnotify notification-daemon,,notification manager
 P,termite
-A,polybar
+A,polybar playerctl zscroll,,polybar
 P,nitrogen
 P,rxvt-unicode
 P,tmux
@@ -66,20 +66,29 @@ P,vim,vim
 P,wget
 P,man-db
 P,ranger
+P,vifm
 P,source-highlight
 P,fzf
+P,fd
 P,pkgfile
 P,xdg-utils
 P,ripgrep
 P,tree
 P,bat
 P,ncdu
+P,htop
+P,feh
+P,scrot
+P,neofetch
+P,zathura zathura-pdf-mupdf,,zathura
 
 =GUI Apps
 P,firefox
 P,chromium
 A,brave-bin
 A,spotify spotifywm-git,,spotify
+P,vlc
+P,galculator
 
 =Fonts
 A,nerd-fonts-fira-code
@@ -87,6 +96,7 @@ A,nerd-fonts-fira-code
 =Custom
 P,stow,dotfiles,dotfiles
 P,nodejs npm,lifx,lifx controller
+A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 
 =Configuration
 C,,load-fonts,load fonts
@@ -95,15 +105,16 @@ C,,mount-data,mount data
 C,,lockscreen,configure lockscreen
 
 =CMD mirrorlist: sudo reflector -c AU --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
-=CMD enable-sshd: sudo systemctl enable sshd
-=CMD enable-lightdm: sudo systemctl enable lightdm
-=CMD enable-virtualbox: sudo systemctl enable vboxservice
-=CMD enable-bluetooth: sudo systemctl enable bluetooth
+=CMD enable-sshd: sudo systemctl enable --now sshd
+=CMD enable-lightdm: sudo systemctl enable --now lightdm
+=CMD enable-virtualbox: sudo systemctl enable --now vboxservice
+=CMD enable-bluetooth: sudo systemctl enable --now bluetooth
+=CMD enable-tlp: sudo systemctl enable --now tlp
 =CMD zsh: chsh -s $(which zsh)
 =CMD vim: mkdir -p $XDG_DATA_HOME/vim/{backup,swap,undo,view} && vim +PlugUpdate +qall
 =CMD lifx: sudo npm install -g lifx-client
 =CMD load-fonts: for dir in $(find $XDG_DATA_HOME/fonts/ -type d) ; do (cd $dir; mkfontdir ; mkfontscale) ; done ; fc-cache -f
-=CMD enable-macspoof: sudo systemctl enable macspoof@wlan0.service
+=CMD enable-macspoof: sudo systemctl enable --now macspoof@wlan0.service
 =CMD mount-data: sudo mkdir /data 2> /dev/null ; sblk -o LABEL | grep -q Data && grep -q "\s/data\s" /etc/fstab || echo "LABEL=Data		/data	auto	auto,nouser,exec,rw,async,atime	0 0" | sudo tee -a /etc/fstab
 =CMD lockscreen: betterlockscreen -u $HOME/.local/share/wallpapers
 
@@ -118,13 +129,12 @@ $HOME/.dotfiles/dot load -g -p
 grep ^dell-smm-hwmon$ /etc/modules 2> /dev/null || echo dell-smm-hwmon | sudo tee -a /etc/modules
 grep "^options dell-smm-hwmon restricted=0$" /etc/modprobe.d/dell-smm-hwmon.conf 2> /dev/null || echo options dell-smm-hwmon restricted=0 | sudo tee -a /etc/modprobe.d/dell-smm-hwmon.conf
 sudo modprobe -v i8k
-sudo systemctl enable i8kmon.service
-sudo systemctl start i8kmon.service
+sudo systemctl enable --now i8kmon.service
+sudo systemctl enable --now dell-bios-fan-control.service
 sudo dell-bios-fan-control on
 
 =CMD nordvpn
 sudo groupadd -r nordvpn
 sudo usermod -aG nordvpn $USER
-sudo systemctl enable nordvpnd
-sudo systemctl start nordvpn
+sudo systemctl enable --now nordvpnd
 nordvpn login
