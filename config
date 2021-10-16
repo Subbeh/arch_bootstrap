@@ -77,6 +77,7 @@ P,tree
 P,bat
 P,ncdu
 P,htop
+P,btop
 P,feh
 P,scrot
 P,neofetch
@@ -99,8 +100,11 @@ P,nodejs npm,lifx,lifx controller
 A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 
 =Configuration
+C,,load-env,load dotfiles
+C,,load-env-root,load dotfiles (root)
 C,,load-fonts,load fonts
 C,,enable-macspoof,spoof MAC address
+C,,enable-bluetooth_poweron,auto-power bluetooth
 C,,mount-data,mount data
 C,,lockscreen,configure lockscreen
 
@@ -109,7 +113,9 @@ C,,lockscreen,configure lockscreen
 =CMD enable-lightdm: sudo systemctl enable --now lightdm
 =CMD enable-virtualbox: sudo systemctl enable --now vboxservice
 =CMD enable-bluetooth: sudo systemctl enable --now bluetooth
+=CMD enable-bluetooth-poweron: sudo systemctl enable --now bluetooth-poweron
 =CMD enable-tlp: sudo systemctl enable --now tlp
+=CMD dotfiles: git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
 =CMD zsh: chsh -s $(which zsh)
 =CMD vim: mkdir -p $XDG_DATA_HOME/vim/{backup,swap,undo,view} && vim +PlugUpdate +qall
 =CMD lifx: sudo npm install -g lifx-client
@@ -118,12 +124,13 @@ C,,lockscreen,configure lockscreen
 =CMD mount-data: sudo mkdir /data 2> /dev/null ; sblk -o LABEL | grep -q Data && grep -q "\s/data\s" /etc/fstab || echo "LABEL=Data		/data	auto	auto,nouser,exec,rw,async,atime	0 0" | sudo tee -a /etc/fstab
 =CMD lockscreen: betterlockscreen -u $HOME/.local/share/wallpapers
 
-=CMD dotfiles
-git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
+=CMD load-env
 (cd ~/.dotfiles && git submodule init && git submodule update)
 (cd ~/.dotfiles/fonts/.local/share/fonts && git submodule init && git submodule update)
 rm ~/.bashrc ~/.bash_profile 2>/dev/null
 $HOME/.dotfiles/dot load -g -p
+
+=CMD load-env-root: dot load root_env
 
 =CMD fan-control
 grep ^dell-smm-hwmon$ /etc/modules 2> /dev/null || echo dell-smm-hwmon | sudo tee -a /etc/modules
