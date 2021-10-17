@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 #
-# SCRIPT: bootstrap.sh
-# DATE:   2021-01-05
-# REV:    1.0
-#
-# PLATFORM: Arch based Linux distributions
+# Arch based bootstrapping script
 #
 # PURPOSE: Automate the setup of a new Arch installation by installing
 #          predefined packages and running configuration scripts.
@@ -48,7 +44,7 @@ preprocess() {
   log refreshing package databases
   catch sudo pacman --noconfirm -Syy
 
-  prereq=(dialog curl git binutils make gcc pkg-config fakeroot)
+  prereq=(dialog curl git binutils make gcc pkg-config fakeroot rsync)
   whiptail --title "Preprocess" \
            --yesno \
            --yes-button "Continue" \

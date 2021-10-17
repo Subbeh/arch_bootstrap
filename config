@@ -61,7 +61,7 @@ A,networkmanager-dmenu
 A,betterlockscreen
 
 =Utilities
-P,zip unzip unrar p7zip gzip bzip2 rsync,,archiving/compression tools
+P,zip unzip unrar p7zip gzip bzip2,,archiving/compression tools
 P,vim,vim
 P,wget
 P,man-db
@@ -101,7 +101,6 @@ A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 
 =Configuration
 C,,load-env,load dotfiles
-C,,load-env-root,load dotfiles (root)
 C,,load-fonts,load fonts
 C,,enable-macspoof,spoof MAC address
 C,,enable-bluetooth_poweron,auto-power bluetooth
@@ -117,9 +116,9 @@ C,,lockscreen,configure lockscreen
 =CMD enable-tlp: sudo systemctl enable --now tlp
 =CMD dotfiles: git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
 =CMD zsh: chsh -s $(which zsh)
-=CMD vim: mkdir -p $XDG_DATA_HOME/vim/{backup,swap,undo,view} && vim +PlugUpdate +qall
+=CMD vim: mkdir -p ~/.local/share/vim/{backup,swap,undo,view} && vim +PlugUpdate +qall
 =CMD lifx: sudo npm install -g lifx-client
-=CMD load-fonts: for dir in $(find $XDG_DATA_HOME/fonts/ -type d) ; do (cd $dir; mkfontdir ; mkfontscale) ; done ; fc-cache -f
+=CMD load-fonts: for dir in $(find ~/.local/share/fonts/ -type d) ; do (cd $dir; mkfontdir ; mkfontscale) ; done ; fc-cache -f
 =CMD enable-macspoof: sudo systemctl enable --now macspoof@wlan0.service
 =CMD mount-data: sudo mkdir /data 2> /dev/null ; sblk -o LABEL | grep -q Data && grep -q "\s/data\s" /etc/fstab || echo "LABEL=Data		/data	auto	auto,nouser,exec,rw,async,atime	0 0" | sudo tee -a /etc/fstab
 =CMD lockscreen: betterlockscreen -u $HOME/.local/share/wallpapers
@@ -129,8 +128,6 @@ C,,lockscreen,configure lockscreen
 (cd ~/.dotfiles/fonts/.local/share/fonts && git submodule init && git submodule update)
 rm ~/.bashrc ~/.bash_profile 2>/dev/null
 $HOME/.dotfiles/dot load -g -p
-
-=CMD load-env-root: dot load root_env
 
 =CMD fan-control
 grep ^dell-smm-hwmon$ /etc/modules 2> /dev/null || echo dell-smm-hwmon | sudo tee -a /etc/modules
