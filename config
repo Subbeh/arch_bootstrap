@@ -28,8 +28,8 @@ P,intel-ucode
 P,openssh,enable-sshd
 P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nmap,,network tools
 P,zsh,zsh
-A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,virtualbox host utils
-P,virtualbox-guest-utils,enable-virtualbox,virtualbox guest utils
+A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
+P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
 A,nordvpn-bin
 P,python-pip
 P,jre-openjdk
