@@ -24,21 +24,37 @@
 =System
 P,reflector,mirrorlist,mirror-list optimizer
 P,base-devel cmake binutils boost pacman-contrib,,build tools (base-devel)
+P,intel-ucode
 P,openssh,enable-sshd
-P,net-tools dnsutils inetutils iproute2 macchanger,,network tools
+P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nmap,,network tools
 P,zsh,zsh
 P,virtualbox-guest-utils,enable-virtualbox
-A,nordvpn-bin rofi-nordvpn-git,nordvpn
+A,nordvpn-bin
 P,python-pip
+P,jre-openjdk
 A,bluez bluez-utils rofi-bluetooth-git,enable-bluetooth,bluetooth tools
 P,alsa-utils pulseaudio-alsa pulseaudio-bluetooth pavucontrol,,audio tools
 P,strace,,debugging tools
 P,tlp,enable-tlp
+A,timeshift
+P,brightnessctl
+P,kdeconnect
 
-=Graphical Utilities
-P,xorg-server xorg-apps xorg-xinit xterm numlockx xbindkeys,,xorg display server
-P,picom,,picom compositor
+=Xorg Utilities
+P,xorg-server xorg-apps xorg-xinit,,xorg display server
+P,picom
 P,arandr
+P,xterm
+P,numlockx
+P,xbindkeys
+P,xclip
+P,xdo
+P,xlsw-git
+P,wmctrl
+A,wmutils-git
+A,xlsw-git
+A,xtitle
+P,redshift
 
 =Sound utilities
 P,alsa-utils 
@@ -49,7 +65,8 @@ P,lightdm lightdm-gtk-greeter,enable-lightdm
 P,bspwm sxhkd,,bspwm window manager
 P,dunst libnotify notification-daemon,,notification manager
 P,termite
-A,polybar playerctl zscroll,,polybar
+P,alacritty
+A,polybar playerctl zscroll-git,,polybar
 P,nitrogen
 P,rxvt-unicode
 P,tmux
@@ -59,13 +76,14 @@ P,rofi
 P,xclip
 A,networkmanager-dmenu
 A,betterlockscreen
+P,thunar
 
 =Utilities
 P,zip unzip unrar p7zip gzip bzip2,,archiving/compression tools
 P,vim,vim
 P,wget
 P,man-db
-P,ranger
+P,ranger atool elinks ffmpegthumbnailer highlight mediainfo odt2txt perl-image-exiftool ueberzug,,ranger
 P,vifm
 P,source-highlight
 P,fzf
@@ -80,8 +98,12 @@ P,htop
 P,btop
 P,feh
 P,scrot
+P,flameshot
 P,neofetch
+P,pfetch
 P,zathura zathura-pdf-mupdf,,zathura
+P,mlocate
+P,exa
 
 =GUI Apps
 P,firefox
@@ -90,8 +112,15 @@ A,brave-bin
 A,spotify spotifywm-git,,spotify
 P,vlc
 P,galculator
+P,notepadqq
+P,cherrytree
+P,cheese
+A,popcorntime-bin
+P,qbittorrent
 
 =Fonts
+P,gucharmap
+A,font-manager
 A,nerd-fonts-fira-code
 
 =Custom
@@ -106,6 +135,7 @@ C,,enable-macspoof,spoof MAC address
 C,,enable-bluetooth_poweron,auto-power bluetooth
 C,,mount-data,mount data
 C,,lockscreen,configure lockscreen
+C,,kbd-backlight,keyboard backlight timeout
 
 =CMD mirrorlist: sudo reflector -c AU --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
 =CMD enable-sshd: sudo systemctl enable --now sshd
@@ -122,6 +152,7 @@ C,,lockscreen,configure lockscreen
 =CMD enable-macspoof: sudo systemctl enable --now macspoof@wlan0.service
 =CMD mount-data: sudo mkdir /data 2> /dev/null ; sblk -o LABEL | grep -q Data && grep -q "\s/data\s" /etc/fstab || echo "LABEL=Data		/data	auto	auto,nouser,exec,rw,async,atime	0 0" | sudo tee -a /etc/fstab
 =CMD lockscreen: betterlockscreen -u $HOME/.local/share/wallpapers
+=CMD kbd-backlight: echo "5m" | sudo tee /sys/class/leds/dell\:\:kbd_backlight/stop_timeout
 
 =CMD load-env
 (cd ~/.dotfiles && git submodule init && git submodule update)
@@ -135,7 +166,6 @@ grep "^options dell-smm-hwmon restricted=0$" /etc/modprobe.d/dell-smm-hwmon.conf
 sudo modprobe -v i8k
 sudo systemctl enable --now i8kmon.service
 sudo systemctl enable --now dell-bios-fan-control.service
-sudo dell-bios-fan-control on
 
 =CMD nordvpn
 sudo groupadd -r nordvpn
