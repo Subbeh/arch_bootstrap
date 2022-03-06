@@ -23,7 +23,7 @@
 
 =System
 P,reflector,mirrorlist,mirror-list optimizer
-P,base-devel cmake binutils boost pacman-contrib,,build tools (base-devel)
+P,base-devel cmake binutils boost pacman-contrib,,build tools
 P,intel-ucode
 P,openssh,enable-sshd
 P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nmap,,network tools
@@ -39,9 +39,9 @@ P,strace,,debugging tools
 P,tlp,enable-tlp
 A,timeshift
 P,brightnessctl
-P,kdeconnect
+P,ntfs-3g,,NTFS support
 
-=Xorg Utilities
+=Xorg
 P,xorg-server xorg-apps xorg-xinit,,xorg display server
 P,picom
 P,arandr
@@ -105,6 +105,7 @@ P,pfetch
 P,zathura zathura-pdf-mupdf,,zathura
 P,mlocate
 P,exa
+P,kdeconnect
 
 =GUI Apps
 P,firefox
@@ -118,6 +119,7 @@ P,cherrytree
 P,cheese
 A,popcorntime-bin
 P,qbittorrent
+P,bleachbit
 
 =Fonts
 P,gucharmap
@@ -138,7 +140,7 @@ C,,mount-data,mount data
 C,,lockscreen,configure lockscreen
 C,,kbd-backlight,keyboard backlight timeout
 
-=CMD mirrorlist: sudo reflector -c AU --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
+=CMD mirrorlist: country=$(curl -Ss ipinfo.io | awk -F'[:,"]' '/country/ { print $5 }') ; sudo reflector -c ${country:-AU} --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
 =CMD enable-sshd: sudo systemctl enable --now sshd
 =CMD enable-lightdm: sudo systemctl enable --now lightdm
 =CMD enable-virtualbox: sudo systemctl enable --now vboxservice
