@@ -106,6 +106,7 @@ P,zathura zathura-pdf-mupdf,,zathura
 P,mlocate
 P,exa
 P,kdeconnect
+P,lsof
 
 =GUI Apps
 P,firefox
