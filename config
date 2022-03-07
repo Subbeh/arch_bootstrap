@@ -111,7 +111,6 @@ P,lsof
 =GUI Apps
 P,firefox
 P,chromium
-A,brave-bin
 A,spotify spotifywm-git,,spotify
 P,vlc
 P,galculator
