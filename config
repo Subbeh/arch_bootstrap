@@ -34,7 +34,7 @@ A,nordvpn-bin
 P,python-pip
 P,jre-openjdk
 A,bluez bluez-utils rofi-bluetooth-git,enable-bluetooth,bluetooth tools
-P,alsa-utils pulseaudio-alsa pulseaudio-bluetooth pavucontrol,,audio tools
+P,pulseaudio alsa-utils pulseaudio-alsa pulseaudio-bluetooth pavucontrol,pulseaudio,pulseaudio
 P,strace,,debugging tools
 P,tlp,enable-tlp
 A,timeshift
@@ -57,15 +57,9 @@ A,xlsw-git
 A,xtitle
 P,redshift
 
-=Sound utilities
-P,alsa-utils 
-P,pulseaudio-alsa
-
 =Desktop Environment
-P,lightdm lightdm-gtk-greeter,enable-lightdm
 P,bspwm sxhkd,,bspwm window manager
 P,dunst libnotify notification-daemon,,notification manager
-P,termite
 P,alacritty
 A,polybar playerctl zscroll-git,,polybar
 P,nitrogen
@@ -142,15 +136,15 @@ C,,kbd-backlight,keyboard backlight timeout
 
 =CMD mirrorlist: country=$(curl -Ss ipinfo.io | awk -F'[:,"]' '/country/ { print $5 }') ; sudo reflector -c ${country:-AU} --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
 =CMD enable-sshd: sudo systemctl enable --now sshd
-=CMD enable-lightdm: sudo systemctl enable --now lightdm
 =CMD enable-virtualbox: sudo systemctl enable --now vboxservice
 =CMD enable-bluetooth: sudo systemctl enable --now bluetooth
 =CMD enable-bluetooth-poweron: sudo systemctl enable --now bluetooth-poweron
 =CMD enable-tlp: sudo systemctl enable --now tlp
 =CMD dotfiles: git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
-=CMD zsh: chsh -s $(which zsh)
-=CMD vim: mkdir -p ~/.local/share/vim/{backup,swap,undo,view} && vim +PlugUpdate +qall
-=CMD lifx: sudo npm install -g lifx-client
+=CMD zsh: sudo chsh -s $(which zsh) $USER
+=CMD vim: mkdir -p ~/.local/share/vim/{backup,swap,undo,view} ; vim +PlugUpdate +qall
+=CMD lifx: sudo npm install -g lifx-client && gpg -d $DOT/secure/.config/lifx/config.gpg --output ${XDG_CONFIG_HOME:?not set}/lifx/config
+=CMD pulseaudio: pactl set-card-profile alsa_card.usb-DisplayLink_Dell_Universal_Dock_D6000_1801300418-02 off
 =CMD load-fonts: for dir in $(find ~/.local/share/fonts/ -type d) ; do (cd $dir; mkfontdir ; mkfontscale) ; done ; fc-cache -f
 =CMD enable-macspoof: sudo systemctl enable --now macspoof@wlan0.service
 =CMD mount-data: sudo mkdir /data 2> /dev/null ; sblk -o LABEL | grep -q Data && grep -q "\s/data\s" /etc/fstab || echo "LABEL=Data		/data	auto	auto,nouser,exec,rw,async,atime	0 0" | sudo tee -a /etc/fstab
