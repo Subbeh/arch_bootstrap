@@ -114,20 +114,22 @@ P,cheese
 A,popcorntime-bin
 P,qbittorrent
 P,bleachbit
+P,gparted
+
+=Dotfiles
+P,stow,dotfiles,pull dotfiles
 
 =Fonts
 P,gucharmap
 A,font-manager
 A,nerd-fonts-fira-code
+C,,load-fonts,load fonts
 
 =Custom
-P,stow,dotfiles,dotfiles
 P,nodejs npm,lifx,lifx controller
 A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 
 =Configuration
-C,,load-env,load dotfiles
-C,,load-fonts,load fonts
 C,,enable-macspoof,spoof MAC address
 C,,enable-bluetooth_poweron,auto-power bluetooth
 C,,mount-data,mount data
@@ -140,7 +142,6 @@ C,,kbd-backlight,keyboard backlight timeout
 =CMD enable-bluetooth: sudo systemctl enable --now bluetooth
 =CMD enable-bluetooth-poweron: sudo systemctl enable --now bluetooth-poweron
 =CMD enable-tlp: sudo systemctl enable --now tlp
-=CMD dotfiles: git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
 =CMD zsh: sudo chsh -s $(which zsh) $USER
 =CMD vim: mkdir -p ~/.local/share/vim/{backup,swap,undo,view} ; vim +PlugUpdate +qall
 =CMD lifx: sudo npm install -g lifx-client && gpg -d $DOT/secure/.config/lifx/config.gpg --output ${XDG_CONFIG_HOME:?not set}/lifx/config
@@ -151,7 +152,8 @@ C,,kbd-backlight,keyboard backlight timeout
 =CMD lockscreen: betterlockscreen -u $HOME/.local/share/wallpapers
 =CMD kbd-backlight: echo "5m" | sudo tee /sys/class/leds/dell\:\:kbd_backlight/stop_timeout
 
-=CMD load-env
+=CMD dotfiles
+git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
 (cd ~/.dotfiles && git submodule init && git submodule update)
 (cd ~/.dotfiles/fonts/.local/share/fonts && git submodule init && git submodule update)
 rm ~/.bashrc ~/.bash_profile 2>/dev/null
