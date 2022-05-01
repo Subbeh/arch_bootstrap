@@ -26,7 +26,7 @@ P,reflector,mirrorlist,mirror-list optimizer
 P,base-devel cmake binutils boost pacman-contrib,,build tools
 P,intel-ucode
 P,openssh,enable-sshd
-P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nmap,,network tools
+P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nmap whois,,network tools
 P,zsh,zsh
 A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
 P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
@@ -40,6 +40,7 @@ P,tlp,enable-tlp
 A,timeshift
 P,brightnessctl
 P,ntfs-3g,,NTFS support
+P,nfs-utils
 
 =Xorg
 P,xorg-server xorg-apps xorg-xinit,,xorg display server
