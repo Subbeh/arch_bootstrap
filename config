@@ -41,6 +41,7 @@ A,timeshift
 P,brightnessctl
 P,ntfs-3g,,NTFS support
 P,nfs-utils
+P,smbclient
 
 =Xorg
 P,xorg-server xorg-apps xorg-xinit,,xorg display server
@@ -155,8 +156,8 @@ C,,kbd-backlight,keyboard backlight timeout
 
 =CMD dotfiles
 git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
-(cd ~/.dotfiles && git submodule init && git submodule update)
-(cd ~/.dotfiles/fonts/.local/share/fonts && git submodule init && git submodule update)
+(cd ~/.dotfiles && submodule update --init --recursive)
+(cd ~/.dotfiles/fonts/.local/share/fonts submodule update --init --recursive)
 rm ~/.bashrc ~/.bash_profile 2>/dev/null
 $HOME/.dotfiles/dot load -g -p
 
