@@ -2,13 +2,13 @@
 #
 # format:
 # =<Category>
-# <tag>, [name], [command-name], [description]
+# <tag>, [package-name(s)], [command-name], [description]
 #
 # - tag:
 #       - P: package (pacman)
 #       - A: AUR package (yay)
 #       - C: custom command (combined with "=CMD" entry)
-# - name: package name
+# - name: package name(s)
 # - command-name (optional): name of "=CMD" entry
 # - description (optional): description of item
 #
@@ -26,11 +26,11 @@ P,reflector,mirrorlist,mirror-list optimizer
 P,base-devel cmake binutils boost pacman-contrib,,build tools
 P,intel-ucode
 P,openssh,enable-sshd
-P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nmap whois,,network tools
+P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nmap whois mtr,,network tools
 P,zsh,zsh
 A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
 P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
-A,nordvpn-bin
+A,nordvpn-bin,nordvpn
 P,python-pip
 P,jre-openjdk
 A,bluez bluez-utils rofi-bluetooth-git,enable-bluetooth,bluetooth tools
@@ -42,6 +42,7 @@ P,brightnessctl
 P,ntfs-3g,,NTFS support
 P,nfs-utils
 P,smbclient
+P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
 
 =Xorg
 P,xorg-server xorg-apps xorg-xinit,,xorg display server
@@ -60,7 +61,7 @@ A,xtitle
 P,redshift
 
 =Desktop Environment
-P,bspwm sxhkd,,bspwm window manager
+A,bspwm sxhkd bsp-layout,,bspwm window manager
 P,dunst libnotify notification-daemon,,notification manager
 P,alacritty
 A,polybar playerctl zscroll-git,,polybar
@@ -126,6 +127,7 @@ P,gucharmap
 A,font-manager
 A,nerd-fonts-fira-code
 C,,load-fonts,load fonts
+P,papirus-icon-theme
 
 =Custom
 P,nodejs npm,lifx,lifx controller
@@ -137,6 +139,7 @@ C,,enable-bluetooth_poweron,auto-power bluetooth
 C,,mount-data,mount data
 C,,lockscreen,configure lockscreen
 C,,kbd-backlight,keyboard backlight timeout
+C,,backlight,enable screen backlight control
 
 =CMD mirrorlist: country=$(curl -Ss ipinfo.io | awk -F'[:,"]' '/country/ { print $5 }') ; sudo reflector -c ${country:-AU} --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
 =CMD enable-sshd: sudo systemctl enable --now sshd
@@ -153,6 +156,7 @@ C,,kbd-backlight,keyboard backlight timeout
 =CMD mount-data: sudo mkdir /data 2> /dev/null ; sblk -o LABEL | grep -q Data && grep -q "\s/data\s" /etc/fstab || echo "LABEL=Data		/data	auto	auto,nouser,exec,rw,async,atime	0 0" | sudo tee -a /etc/fstab
 =CMD lockscreen: betterlockscreen -u $HOME/.local/share/wallpapers
 =CMD kbd-backlight: echo "5m" | sudo tee /sys/class/leds/dell\:\:kbd_backlight/stop_timeout
+=CMD backlight: sudo usermod -aG video $USER
 
 =CMD dotfiles
 git clone git@github.com:Subbeh/dotfiles.git ~/.dotfiles
@@ -172,4 +176,12 @@ sudo systemctl enable --now dell-bios-fan-control.service
 sudo groupadd -r nordvpn
 sudo usermod -aG nordvpn $USER
 sudo systemctl enable --now nordvpnd
+nordvpn whitelist add subnet 192.168.1.0/24
 nordvpn login
+
+=CMD kvm
+sudo systemctl enable --now libvirtd.service
+sudo usermod -aG libvirt $USER
+sudo modprobe -r kvm_intel
+sudo modprobe kvm_intel nested=1
+echo "options kvm-intel nested=1" | sudo tee /etc/modprobe.d/kvm-intel.conf
