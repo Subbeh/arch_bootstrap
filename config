@@ -24,13 +24,14 @@
 =System
 P,reflector,mirrorlist,mirror-list optimizer
 P,base-devel cmake binutils boost pacman-contrib,,build tools
+P,linux-lts,,lts kernel
+P,linux-zen,,zen kernel
 P,intel-ucode
 P,openssh,enable-sshd
-P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nmap whois mtr,,network tools
+P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nethogs nmap whois mtr,,network tools
 P,zsh,zsh
-A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
-P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
 A,nordvpn-bin,nordvpn
+A,mullvad-vpn
 P,python-pip
 P,jre-openjdk
 A,bluez bluez-utils rofi-bluetooth-git,enable-bluetooth,bluetooth tools
@@ -42,7 +43,7 @@ P,brightnessctl
 P,ntfs-3g,,NTFS support
 P,nfs-utils
 P,smbclient
-P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
+A,pure-ftpd
 
 =Xorg
 P,xorg-server xorg-apps xorg-xinit,,xorg display server
@@ -77,7 +78,7 @@ A,betterlockscreen
 P,thunar
 
 =Utilities
-P,zip unzip unrar p7zip gzip bzip2,,archiving/compression tools
+P,zip unzip unrar p7zip gzip bzip2 zstd,,archiving/compression tools
 P,vim,vim
 P,wget
 P,man-db
@@ -104,10 +105,12 @@ P,mlocate
 P,exa
 P,kdeconnect
 P,lsof
+P,lastpass-cli
 
 =GUI Apps
 P,firefox
 P,chromium
+A,tor-browser
 A,spotify spotifywm-git,,spotify
 P,vlc
 P,galculator
@@ -118,6 +121,15 @@ A,popcorntime-bin
 P,qbittorrent
 P,bleachbit
 P,gparted
+A,zoom
+A,teams
+
+=DevOps
+A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
+P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
+P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
+P,ansible-core ansible,,ansible
+P,vagrant
 
 =Dotfiles
 P,stow,dotfiles,pull dotfiles
