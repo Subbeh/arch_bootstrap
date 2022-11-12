@@ -86,6 +86,7 @@ P,man-db
 P,ranger atool elinks ffmpegthumbnailer highlight mediainfo odt2txt perl-image-exiftool ueberzug,,ranger
 P,vifm
 P,source-highlight
+P,yamllint
 P,fzf
 P,fd
 P,pkgfile
@@ -112,6 +113,7 @@ A,navi-bin
 P,ueberzug
 P,scrcpy
 P,glances
+P,rebuild-detector
 
 =GUI Apps
 P,firefox
@@ -120,6 +122,7 @@ A,tor-browser
 A,spotify spotifywm-git,,spotify
 P,vlc
 P,galculator
+P,obsidian
 P,notepadqq
 P,cherrytree
 P,cheese
@@ -134,9 +137,10 @@ A,teams
 A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
 P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
 P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
-P,ansible-core ansible,,ansible
+P,ansible-core ansible ansible-lint molecule molecule-docker molecule-vagrant,,ansible
 P,terraform
 P,vagrant
+P,kubectl helm kubectx,,k8s utils
 
 =Dotfiles
 P,stow,dotfiles,pull dotfiles
@@ -196,7 +200,7 @@ sudo systemctl enable --now dell-bios-fan-control.service
 sudo groupadd -r nordvpn
 sudo usermod -aG nordvpn $USER
 sudo systemctl enable --now nordvpnd
-nordvpn whitelist add subnet 192.168.1.0/24
+nordvpn whitelist add subnet 10.0.0.0/16
 nordvpn login
 
 =CMD kvm
