@@ -30,17 +30,15 @@ P,intel-ucode
 P,openssh,enable-sshd
 P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nethogs nmap whois mtr iperf3,,network tools
 P,zsh,zsh
+P,vim,vim
+P,nvim
 A,nordvpn-bin,nordvpn
-P,tailscale,enable-tailscale
 A,mullvad-vpn
+P,tailscale,enable-tailscale
 P,python-pip
 P,jre-openjdk
 A,bluez bluez-utils rofi-bluetooth-git,enable-bluetooth,bluetooth tools
 P,pulseaudio alsa-utils pulseaudio-alsa pulseaudio-bluetooth pavucontrol,pulseaudio,pulseaudio
-P,strace,,debugging tools
-P,tlp,enable-tlp
-A,timeshift
-P,brightnessctl
 P,ntfs-3g,,NTFS support
 P,nfs-utils
 P,smbclient
@@ -60,37 +58,39 @@ P,wmctrl
 A,wmutils-git
 A,xlsw-git
 A,xtitle
-P,redshift
 
 =Desktop Environment
 A,bspwm sxhkd bsp-layout,,bspwm window manager
 P,dunst libnotify notification-daemon,,notification manager
-P,alacritty
 A,polybar playerctl zscroll-git,,polybar
-P,nitrogen
+P,xdg-utils
+P,alacritty
 P,rxvt-unicode
-P,tmux
-P,xdo
+P,tmux tmuxinator,,tmux
+P,nitrogen
 A,dmenu2
 P,rofi
-P,xclip
 A,networkmanager-dmenu
 A,betterlockscreen
 P,thunar
 
 =Utilities
 P,zip unzip unrar p7zip gzip bzip2 zstd,,archiving/compression tools
-P,vim,vim
 P,wget
 P,man-db
-P,ranger atool elinks ffmpegthumbnailer highlight mediainfo odt2txt perl-image-exiftool ueberzug,,ranger
+P,tldr
+P,strace,,debugging tools
+P,tlp,enable-tlp
+P,brightnessctl
+A,ranger atool elinks ffmpegthumbnailer highlight mediainfo odt2txt perl-image-exiftool ueberzug epub-thumbnailer-git,,ranger
 P,vifm
+A,timeshift
 P,source-highlight
 P,yamllint
 P,fzf
 P,fd
+A,xh
 P,pkgfile
-P,xdg-utils
 P,ripgrep
 P,tree
 P,bat
@@ -107,7 +107,6 @@ P,mlocate
 P,exa
 P,kdeconnect
 P,lsof
-P,lastpass-cli
 A,bitwarden-cli-bin
 A,navi-bin
 P,ueberzug
@@ -126,21 +125,23 @@ P,obsidian
 P,notepadqq
 P,cherrytree
 P,cheese
-A,popcorntime-bin
 P,qbittorrent
 P,bleachbit
 P,gparted
 A,zoom
 A,teams
+P,discord
 
-=DevOps
+=Dev
 A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
 P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
 P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
 P,ansible-core ansible ansible-lint molecule molecule-docker molecule-vagrant,,ansible
 P,terraform
 P,vagrant
-P,kubectl helm kubectx,,k8s utils
+P,kubectl helm kubectx k9s,,k8s utils
+P,argocd
+P,python-pre-commit
 
 =Dotfiles
 P,stow,dotfiles,pull dotfiles
@@ -148,9 +149,21 @@ P,stow,dotfiles,pull dotfiles
 =Fonts
 P,gucharmap
 A,font-manager
+P,noto-fonts
+A,gohufont-powerline
+A,jmk-x11-fonts-git
 A,nerd-fonts-fira-code
-C,,load-fonts,load fonts
+A,otf-sfmono-patched
+A,scientifica
+A,siji-ng
+A,tamzen-font
+A,termsyn-powerline-font-git
+A,ttf-icomoon-feather
+A,ttf-material-design-iconic-font
+A,ttf-typicons
+P,otf-font-awesome
 P,papirus-icon-theme
+C,,load-fonts,load fonts
 
 =Custom
 P,nodejs npm,lifx,lifx controller
@@ -160,13 +173,18 @@ A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
 C,,enable-macspoof,spoof MAC address
 C,,enable-bluetooth_poweron,auto-power bluetooth
 C,,enable-ssh-agent,auto-start ssh-agent
+C,,enable-paccache,enable paccache timer
+C,,enable-fstrim,enable fstrim timer
 C,,mount-data,mount data
+C,,mount-nas,mount NAS shares
 C,,lockscreen,configure lockscreen
 C,,kbd-backlight,keyboard backlight timeout
 C,,backlight,enable screen backlight control
 
 =CMD mirrorlist: country=$(curl -Ss ipinfo.io | awk -F'[:,"]' '/country/ { print $5 }') ; sudo reflector -c ${country:-AU} --sort rate --latest 5 --save /etc/pacman.d/mirrorlist
 =CMD enable-sshd: sudo systemctl enable --now sshd
+=CMD enable-paccache: sudo systemctl enable paccache.timer
+=CMD enable-fstrim: sudo systemctl enable fstrim.timer
 =CMD enable-virtualbox: sudo systemctl enable --now vboxservice
 =CMD enable-bluetooth: sudo systemctl enable --now bluetooth
 =CMD enable-bluetooth-poweron: sudo systemctl enable --now bluetooth-poweron
@@ -180,6 +198,7 @@ C,,backlight,enable screen backlight control
 =CMD load-fonts: for dir in $(find ~/.local/share/fonts/ -type d) ; do (cd $dir; mkfontdir ; mkfontscale) ; done ; fc-cache -f
 =CMD enable-macspoof: sudo systemctl enable --now macspoof@wlan0.service
 =CMD mount-data: sudo mkdir /data 2> /dev/null ; sblk -o LABEL | grep -q Data && grep -q "\s/data\s" /etc/fstab || echo "LABEL=Data		/data	auto	auto,nouser,exec,rw,async,atime	0 0" | sudo tee -a /etc/fstab
+=CMD mount-nas: sudo systemctl enable mnt-backup.automount mnt-media.automount mnt-workspace.automount
 =CMD lockscreen: betterlockscreen -u $HOME/.local/share/wallpapers
 =CMD kbd-backlight: echo "5m" | sudo tee /sys/class/leds/dell\:\:kbd_backlight/stop_timeout
 =CMD backlight: sudo usermod -aG video $USER
