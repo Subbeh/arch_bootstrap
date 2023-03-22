@@ -28,10 +28,13 @@ P,linux-lts,,lts kernel
 P,linux-zen,,zen kernel
 P,intel-ucode
 P,openssh,enable-sshd
-P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nethogs nmap whois mtr iperf3,,network tools
+P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nethogs nmap whois mtr iperf3 dog,,network tools
+P,rebuild-detector
+P,tlp,enable-tlp
 P,zsh,zsh
 P,vim,vim
 P,nvim
+P,man-db
 A,nordvpn-bin,nordvpn
 A,mullvad-vpn
 P,tailscale,enable-tailscale
@@ -58,6 +61,7 @@ P,wmctrl
 A,wmutils-git
 A,xlsw-git
 A,xtitle
+A,xsel
 
 =Desktop Environment
 A,bspwm sxhkd bsp-layout,,bspwm window manager
@@ -77,24 +81,23 @@ P,thunar
 =Utilities
 P,zip unzip unrar p7zip gzip bzip2 zstd,,archiving/compression tools
 P,wget
-P,man-db
 P,tldr
 P,strace,,debugging tools
-P,tlp,enable-tlp
 P,brightnessctl
 A,ranger atool elinks ffmpegthumbnailer highlight mediainfo odt2txt perl-image-exiftool ueberzug epub-thumbnailer-git,,ranger
 P,vifm
-A,timeshift
 P,source-highlight
 P,yamllint
 P,fzf
 P,fd
 A,xh
+P,duf
 P,pkgfile
 P,ripgrep
 P,tree
 P,bat
 P,ncdu
+P,dust
 P,htop
 P,btop
 P,feh
@@ -102,28 +105,26 @@ P,scrot
 P,flameshot
 P,neofetch
 P,pfetch
-P,zathura zathura-pdf-mupdf,,zathura
 P,mlocate
 P,exa
-P,kdeconnect
 P,lsof
 A,bitwarden-cli-bin
+A,sshpass
 A,navi-bin
-P,ueberzug
 P,scrcpy
 P,glances
-P,rebuild-detector
 
 =GUI Apps
 P,firefox
 P,chromium
 A,tor-browser
+P,zathura zathura-pdf-mupdf,,zathura
 A,spotify spotifywm-git,,spotify
 P,vlc
+P,mpv
 P,galculator
 P,obsidian
 P,notepadqq
-P,cherrytree
 P,cheese
 P,qbittorrent
 P,bleachbit
@@ -132,19 +133,28 @@ A,zoom
 A,teams
 P,discord
 
-=Dev
+=Infra
 A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
 P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
 P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
 P,ansible-core ansible ansible-lint molecule molecule-docker molecule-vagrant,,ansible
+P,kubectl helm kubectx k9s stern,,k8s utils
 P,terraform
 P,vagrant
-P,kubectl helm kubectx k9s,,k8s utils
 P,argocd
+A,flux-bin
+A,weave-gitops-bin
+P,age
+A,go-task-bin
+P,direnv
+P,ipcalc
 P,python-pre-commit
+P,jq
+P,sops
+P,go-yq
 
 =Dotfiles
-P,stow,dotfiles,pull dotfiles
+P,stow git-crypt,dotfiles,pull dotfiles
 
 =Fonts
 P,gucharmap
