@@ -138,7 +138,7 @@ A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host
 P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
 P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
 P,ansible-core ansible ansible-lint molecule molecule-docker molecule-vagrant,,ansible
-P,kubectl helm kubectx k9s stern,,k8s utils
+P,kubectl helm kubectx k9s stern kubecolor,,k8s utils
 P,terraform
 P,vagrant
 P,argocd

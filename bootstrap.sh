@@ -44,7 +44,7 @@ preprocess() {
   log refreshing package databases
   catch sudo pacman --noconfirm -Syy
 
-  prereq=(dialog curl git binutils make gcc pkg-config fakeroot rsync)
+  prereq=(dialog curl git base-devel binutils make gcc pkg-config fakeroot rsync)
   whiptail --title "Preprocess" \
            --yesno \
            --yes-button "Continue" \
@@ -58,6 +58,8 @@ preprocess() {
 
   if [ ! $(pacman -Qq yay 2>/dev/null) ] ; then
     install_git yay https://aur.archlinux.org/yay.git
+    yay -Y --gendb
+    yay -Syu --devel
   fi
 }
 
