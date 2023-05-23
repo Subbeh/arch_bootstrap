@@ -36,7 +36,7 @@ P,vim,vim
 P,nvim
 P,man-db
 A,nordvpn-bin,nordvpn
-A,mullvad-vpn
+A,mullvad-vpn-bin
 P,tailscale,enable-tailscale
 P,python-pip
 P,jre-openjdk
@@ -74,7 +74,7 @@ P,tmux tmuxinator,,tmux
 P,nitrogen
 A,dmenu2
 P,rofi
-A,networkmanager-dmenu
+#A,networkmanager-dmenu
 A,betterlockscreen
 P,thunar
 
@@ -82,12 +82,11 @@ P,thunar
 P,zip unzip unrar p7zip gzip bzip2 zstd,,archiving/compression tools
 P,wget
 P,tldr
-P,strace,,debugging tools
+#P,strace,,debugging tools
 P,brightnessctl
 A,ranger atool elinks ffmpegthumbnailer highlight mediainfo odt2txt perl-image-exiftool ueberzug epub-thumbnailer-git,,ranger
 P,vifm
 P,source-highlight
-P,yamllint
 P,fzf
 P,fd
 A,xh
@@ -103,21 +102,20 @@ P,btop
 P,feh
 P,scrot
 P,flameshot
-P,neofetch
-P,pfetch
+#P,neofetch
+#P,pfetch
 P,mlocate
 P,exa
 P,lsof
 A,bitwarden-cli-bin
 A,sshpass
-A,navi-bin
-P,scrcpy
-P,glances
+#P,scrcpy
+#P,glances
 
 =GUI Apps
 P,firefox
 P,chromium
-A,tor-browser
+#A,tor-browser
 P,zathura zathura-pdf-mupdf,,zathura
 A,spotify spotifywm-git,,spotify
 P,vlc
@@ -127,23 +125,22 @@ P,obsidian
 P,notepadqq
 P,cheese
 P,qbittorrent
-P,bleachbit
-P,gparted
+#P,bleachbit
+#P,gparted
 A,zoom
-A,teams
+#A,teams
 P,discord
 
 =Infra
-A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
-P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
-P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
+#A,virtualbox virtualbox-ext-oracle virtualbox-host-modules-arch,,virtualbox host utils
+#P,virtualbox-guest-utils xf86-video-vmware,enable-virtualbox,virtualbox guest utils
+#P,qemu virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat libguestfs dmidecode,kvm,kvm
+P,docker
 P,ansible-core ansible ansible-lint molecule molecule-docker molecule-vagrant,,ansible
 P,kubectl helm kubectx k9s stern kubecolor,,k8s utils
 P,terraform
-P,vagrant
+#P,vagrant
 P,argocd
-A,flux-bin
-A,weave-gitops-bin
 P,age
 A,go-task-bin
 P,direnv
@@ -159,28 +156,28 @@ P,stow git-crypt,dotfiles,pull dotfiles
 =Fonts
 P,gucharmap
 A,font-manager
-P,noto-fonts
-A,gohufont-powerline
+#P,noto-fonts
+#A,gohufont-powerline
 A,jmk-x11-fonts-git
 A,nerd-fonts-fira-code
-A,otf-sfmono-patched
-A,scientifica
+#A,otf-sfmono-patched
+#A,scientifica
 A,siji-ng
-A,tamzen-font
-A,termsyn-powerline-font-git
-A,ttf-icomoon-feather
-A,ttf-material-design-iconic-font
-A,ttf-typicons
-P,otf-font-awesome
-P,papirus-icon-theme
-C,,load-fonts,load fonts
+#A,tamzen-font
+#A,termsyn-powerline-font-git
+#A,ttf-icomoon-feather
+#A,ttf-material-design-iconic-font
+#A,ttf-typicons
+#P,otf-font-awesome
+#P,papirus-icon-theme
+#C,,load-fonts,load fonts
 
 =Custom
 P,nodejs npm,lifx,lifx controller
-A,i8kutils dell-bios-fan-control-git tcl acpi,fan-control,i8k fan control
+A,i8kutils dell-bios-fan-control-git tcl tk acpi,fan-control,i8k fan control
 
 =Configuration
-C,,enable-macspoof,spoof MAC address
+#C,,enable-macspoof,spoof MAC address
 C,,enable-bluetooth_poweron,auto-power bluetooth
 C,,enable-ssh-agent,auto-start ssh-agent
 C,,enable-paccache,enable paccache timer
@@ -219,9 +216,9 @@ rm ~/.bashrc ~/.bash_profile 2>/dev/null
 $HOME/.dotfiles/dot load -g -p
 
 =CMD fan-control
-grep ^dell-smm-hwmon$ /etc/modules 2> /dev/null || echo dell-smm-hwmon | sudo tee -a /etc/modules
-grep "^options dell-smm-hwmon restricted=0$" /etc/modprobe.d/dell-smm-hwmon.conf 2> /dev/null || echo options dell-smm-hwmon restricted=0 | sudo tee -a /etc/modprobe.d/dell-smm-hwmon.conf
-sudo modprobe -v i8k
+#grep ^dell-smm-hwmon$ /etc/modules 2> /dev/null || echo dell-smm-hwmon | sudo tee -a /etc/modules
+#grep "^options dell-smm-hwmon restricted=0$" /etc/modprobe.d/dell-smm-hwmon.conf 2> /dev/null || echo options dell-smm-hwmon restricted=0 | sudo tee -a /etc/modprobe.d/dell-smm-hwmon.conf
+#sudo modprobe -v i8k
 sudo systemctl enable --now i8kmon.service
 sudo systemctl enable --now dell-bios-fan-control.service
 
