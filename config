@@ -27,7 +27,7 @@ P,base-devel cmake binutils boost pacman-contrib,,build tools
 P,linux-lts,,lts kernel
 P,linux-zen,,zen kernel
 P,intel-ucode
-P,openssh,enable-sshd
+P,openssh libfido2,enable-sshd,openssh
 P,net-tools dnsutils inetutils iproute2 macchanger speedtest-cli nethogs nmap whois mtr iperf3 dog,,network tools
 P,rebuild-detector
 P,tlp,enable-tlp
